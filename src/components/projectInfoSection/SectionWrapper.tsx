@@ -1,4 +1,4 @@
-import { MainAction, ViewTab } from '@/types';
+import { ViewTab } from '@/types';
 import { MAIN_ACTIONS, VIEW_TABS, MOBILE_STATUS_TABS } from '@/constants';
 import ExportButton from '../buttons/ExportButton';
 import MainActions from './MainActions';

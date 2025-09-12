@@ -27,7 +27,7 @@ function modToStatus(id: number): TaskStatus {
 // Async funkcija za dohvaćanje i mapiranje podataka
 export async function getTasks(): Promise<Task[]> {
   const data = await fetchTodos();
-  return data.map((t: any) => ({
+  return data.map((t: { id: number; title: string }) => ({
     id: t.id,
     title: t.title,
     status: modToStatus(t.id),

@@ -3,7 +3,6 @@ import type {
   StatusStyleConfig,
   ColorConfig,
   CountsConfig,
-  ProgressVariant,
 } from '@/types';
 
 /**

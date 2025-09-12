@@ -11,15 +11,15 @@ import { COLUMN_CONFIG } from '@/constants';
 import { useTasks } from '@/hooks/useTasks';
 import TaskColumn from './TaskColumn';
 import TaskCard from '../TaskCard/Card';
-import type { TaskStatus } from '@/types';
+import type { TaskStatus, Task } from '@/types';
 
 export default function BoardWrapper() {
   const { tasks, columns, loading, error, moveTask } = useTasks();
-  const [activeTask, setActiveTask] = useState<any>(null);
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
-    setActiveTask(active.data.current);
+    setActiveTask(active.data.current as Task);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {

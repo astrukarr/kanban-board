@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "title": "Dashboard - Kanban Board",
+    "description": "Overview of your projects and team activity",
+    "keywords": ["dashboard", "projects", "kanban", "task management"]
+  },
+  "header": {
+    "logo": {
+      "src": "/static/icons/Logo.svg",
+      "alt": "Kanban Board",
+      "width": 80,
+      "height": 35
+    },
+    "name": {
+      "src": "/static/icons/HeaderLogoName.svg",
+      "alt": "Kanban Board",
+      "width": 80,
+      "height": 35
+    },
+    "ctaButton": {
+      "text": "← Back to Home",
+      "href": "/",
+      "variant": "secondary"
+    }
+  },
+  "stats": [
+    {
+      "id": "total-projects",
+      "title": "Total Projects",
+      "value": 6,
+      "icon": {
+        "src": "/static/icons/ProjectLogo.svg",
+        "alt": "Projects",
+        "width": 24,
+        "height": 24
+      },
+      "color": "indigo"
+    },
+    {
+      "id": "active-projects",
+      "title": "Active Projects",
+      "value": 4,
+      "icon": {
+        "src": "/static/icons/Checkmark.svg",
+        "alt": "Active",
+        "width": 24,
+        "height": 24
+      },
+      "color": "emerald"
+    },
+    {
+      "id": "total-tasks",
+      "title": "Total Tasks",
+      "value": 86,
+      "icon": {
+        "src": "/static/icons/ListView.svg",
+        "alt": "Tasks",
+        "width": 24,
+        "height": 24
+      },
+      "color": "blue"
+    },
+    {
+      "id": "completed-tasks",
+      "title": "Completed",
+      "value": 20,
+      "icon": {
+        "src": "/static/icons/Checkmark.svg",
+        "alt": "Completed",
+        "width": 24,
+        "height": 24
+      },
+      "color": "purple"
+    },
+    {
+      "id": "team-members",
+      "title": "Team Members",
+      "value": 52,
+      "icon": {
+        "src": "/static/icons/User.svg",
+        "alt": "Team",
+        "width": 24,
+        "height": 24
+      },
+      "color": "orange"
+    }
+  ],
+  "recentProjects": [
+    {
+      "id": "project-planetx",
+      "name": "Project PlanetX",
+      "status": "active",
+      "tasksCount": 12,
+      "lastActivity": "2 hours ago",
+      "color": "indigo"
+    },
+    {
+      "id": "ecotech-solutions",
+      "name": "EcoTech Solutions",
+      "status": "active",
+      "tasksCount": 8,
+      "lastActivity": "4 hours ago",
+      "color": "emerald"
+    },
+    {
+      "id": "healthcare-pro",
+      "name": "HealthCare Pro",
+      "status": "planning",
+      "tasksCount": 15,
+      "lastActivity": "1 day ago",
+      "color": "blue"
+    }
+  ],
+  "quickActions": [
+    {
+      "text": "Manage Projects",
+      "href": "/projects",
+      "variant": "primary"
+    },
+    {
+      "text": "Create New Project",
+      "href": "/projects/new",
+      "variant": "secondary"
+    }
+  ]
+}

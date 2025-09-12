@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Projects - Kanban Board",
+    "description": "Manage and track all your projects in one place",
+    "keywords": ["projects", "kanban", "task management", "project management"]
+  },
+  "header": {
+    "logo": {
+      "src": "/static/icons/Logo.svg",
+      "alt": "Kanban Board",
+      "width": 40,
+      "height": 40
+    },
+    "name": {
+      "src": "/static/icons/HeaderLogoName.svg",
+      "alt": "Kanban Board",
+      "width": 120,
+      "height": 40
+    },
+    "ctaButton": {
+      "text": "← Back to Home",
+      "href": "/",
+      "variant": "secondary"
+    }
+  },
+  "projects": [
+    {
+      "id": "project-planetx",
+      "name": "Project PlanetX",
+      "description": "Revolutionary space exploration project with advanced AI systems",
+      "status": "active",
+      "tasksCount": 12,
+      "teamSize": 7,
+      "color": "indigo"
+    },
+    {
+      "id": "ecotech-solutions",
+      "name": "EcoTech Solutions",
+      "description": "Sustainable technology solutions for environmental challenges",
+      "status": "active",
+      "tasksCount": 8,
+      "teamSize": 5,
+      "color": "emerald"
+    },
+    {
+      "id": "healthcare-pro",
+      "name": "HealthCare Pro",
+      "description": "Digital healthcare platform for patient management",
+      "status": "planning",
+      "tasksCount": 15,
+      "teamSize": 9,
+      "color": "blue"
+    },
+    {
+      "id": "financeflow",
+      "name": "FinanceFlow",
+      "description": "Personal finance management and budgeting application",
+      "status": "active",
+      "tasksCount": 6,
+      "teamSize": 4,
+      "color": "purple"
+    },
+    {
+      "id": "edulearn-platform",
+      "name": "EduLearn Platform",
+      "description": "Online learning management system for educational institutions",
+      "status": "completed",
+      "tasksCount": 20,
+      "teamSize": 12,
+      "color": "orange"
+    },
+    {
+      "id": "smartcity-iot",
+      "name": "SmartCity IoT",
+      "description": "Internet of Things infrastructure for smart city development",
+      "status": "planning",
+      "tasksCount": 25,
+      "teamSize": 15,
+      "color": "teal"
+    }
+  ],
+  "emptyState": {
+    "title": "No projects yet",
+    "description": "Create your first project to start organizing your tasks",
+    "button": {
+      "text": "Create Project",
+      "href": "/projects/new",
+      "variant": "primary"
+    }
+  }
+}
