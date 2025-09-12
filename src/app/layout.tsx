@@ -28,9 +28,7 @@ export default function RootLayout({
           <MobileHeader />
           <Sidebar />
           <div className="flex-1 flex flex-col md:ml-20">
-            <div className="hidden md:block">
-              <Toolbar breadcrumbs={crumbs} />
-            </div>
+            <Toolbar breadcrumbs={crumbs} />
             <main className="flex-1 overflow-y-auto">{children}</main>
           </div>
         </div>
