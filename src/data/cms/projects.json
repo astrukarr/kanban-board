@@ -23,6 +23,8 @@
       "variant": "secondary"
     }
   },
+  "projectsPageTitle": "Your Projects",
+  "projectsPageDescription": "Manage and track all your projects in one place",
   "projects": [
     {
       "id": "project-planetx",

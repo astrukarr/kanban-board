@@ -91,7 +91,11 @@ export interface CMSRecentProject {
 export interface DashboardData {
   meta: CMSPageMeta;
   header: CMSHeader;
+  pageTitle: string;
+  pageDescription: string;
   stats: CMSStatCard[];
+  recentProjectsTitle: string;
+  viewAllButton: CMSButton;
   recentProjects: CMSRecentProject[];
   quickActions: CMSButton[];
 }
@@ -110,6 +114,8 @@ export interface CMSProject {
 export interface ProjectsData {
   meta: CMSPageMeta;
   header: CMSHeader;
+  projectsPageTitle: string;
+  projectsPageDescription: string;
   projects: CMSProject[];
   emptyState: {
     title: string;

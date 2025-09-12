@@ -23,6 +23,14 @@
       "variant": "secondary"
     }
   },
+  "pageTitle": "Dashboard",
+  "pageDescription": "Overview of your projects and team activity",
+  "recentProjectsTitle": "Recent Projects",
+  "viewAllButton": {
+    "text": "View All →",
+    "href": "/projects",
+    "variant": "secondary"
+  },
   "stats": [
     {
       "id": "total-projects",

@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function ExportButton() {
   return (
     <button
@@ -5,9 +7,11 @@ export default function ExportButton() {
       className="inline-flex h-12 min-h-12 items-center gap-2 rounded-full bg-indigo-600 px-5 text-white font-semibold cursor-pointer"
     >
       <span>Export Data</span>
-      <img
+      <Image
         src="/static/icons/ExportData.svg"
         alt="Export Data"
+        width={20}
+        height={20}
         className="h-5 w-5"
         aria-hidden
       />
