@@ -1,7 +1,7 @@
 import type { MainAction } from '../../types';
 import Image from 'next/image';
 
-type MainActionsProps = { items: MainAction[]; className?: string };
+type MainActionsProps = { items: readonly MainAction[]; className?: string };
 
 export default function MainActions({ items, className }: MainActionsProps) {
   return (

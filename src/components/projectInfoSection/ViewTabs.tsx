@@ -3,7 +3,7 @@ import Image from 'next/image';
 import type { ViewTabId, ViewTab } from '../../types';
 
 type ViewTabsProps = {
-  items: ViewTab[];
+  items: readonly ViewTab[];
   activeId: ViewTabId;
   onChange?: (id: ViewTabId) => void;
   className?: string;

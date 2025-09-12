@@ -3,6 +3,7 @@ import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import InviteButton from '../buttons/InviteButton';
 import Image from 'next/image';
 import SearchButton from '../buttons/SearchButton';
+import BackButton from '../buttons/BackButton';
 
 type ToolbarProps = {
   breadcrumbs: BreadcrumbsProps['items'];
@@ -50,6 +51,7 @@ export default function Toolbar({ breadcrumbs }: ToolbarProps) {
 
       {/* Mobile */}
       <div className="lg:hidden flex flex-col px-4 py-6 gap-2.5 bg-slate-50">
+        <BackButton />
         <div className="flex items-center gap-2">
           <SearchButton />
           <div className="flex items-center -space-x-3">

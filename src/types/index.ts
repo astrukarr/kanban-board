@@ -21,6 +21,14 @@ export type ViewTabId = 'grid' | 'list' | 'column' | 'row';
 
 export type ViewTab = { id: ViewTabId; icon: string; label: string };
 
+// Mobile Status Tab types
+export type MobileStatusTab = {
+  id: string;
+  label: string;
+  active: boolean;
+  badge?: number;
+};
+
 // Task-related types
 export type TaskStatus = 'todo' | 'in_progress' | 'completed';
 
