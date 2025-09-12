@@ -1,3 +1,6 @@
+'use client';
+
+import { useDraggable } from '@dnd-kit/core';
 import { TaskCardProps } from '@/types';
 import { STATUS_LABELS } from '@/constants';
 import { calculateCounts, calculateProgress, getColorConfig } from '@/utils';
@@ -10,8 +13,32 @@ export default function TaskCard({ id, title, status }: TaskCardProps) {
   const progress = calculateProgress(status, id);
   const colorConfig = getColorConfig(status);
 
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: id,
+      data: {
+        id,
+        title,
+        status,
+      },
+    });
+
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined;
+
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-3 shadow-md cursor-pointer">
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className={`rounded-3xl border border-slate-200 bg-white p-3 shadow-md cursor-pointer transition-opacity ${
+        isDragging ? 'opacity-50' : ''
+      }`}
+    >
       <div
         className={`inline-flex items-center justify-center gap-1 rounded-full px-2 py-1 ${colorConfig.chipBg}`}
       >

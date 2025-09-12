@@ -1,0 +1,134 @@
+import { useReducer, useEffect } from 'react';
+import type { Task, TaskStatus } from '@/types';
+import { getTasks, createColumns } from '@/lib/api/todos';
+
+// State tip
+export interface TasksState {
+  tasks: Task[];
+  columns: {
+    todo: Task[];
+    in_progress: Task[];
+    completed: Task[];
+  };
+  loading: boolean;
+  error: string | null;
+}
+
+// Action tipovi
+export type TasksAction =
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'SET_ERROR'; payload: string | null }
+  | { type: 'SET_TASKS'; payload: Task[] }
+  | { type: 'MOVE_TASK'; payload: { taskId: number; newStatus: TaskStatus } }
+  | { type: 'LOAD_FROM_STORAGE'; payload: Task[] };
+
+// Početni state
+const initialState: TasksState = {
+  tasks: [],
+  columns: {
+    todo: [],
+    in_progress: [],
+    completed: [],
+  },
+  loading: false,
+  error: null,
+};
+
+// Reducer funkcija
+function tasksReducer(state: TasksState, action: TasksAction): TasksState {
+  switch (action.type) {
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+
+    case 'SET_ERROR':
+      return { ...state, error: action.payload, loading: false };
+
+    case 'SET_TASKS':
+      return {
+        ...state,
+        tasks: action.payload,
+        columns: createColumns(action.payload),
+        loading: false,
+        error: null,
+      };
+
+    case 'MOVE_TASK': {
+      const { taskId, newStatus } = action.payload;
+      const updatedTasks = state.tasks.map(task =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      );
+      return {
+        ...state,
+        tasks: updatedTasks,
+        columns: createColumns(updatedTasks),
+      };
+    }
+
+    case 'LOAD_FROM_STORAGE':
+      return {
+        ...state,
+        tasks: action.payload,
+        columns: createColumns(action.payload),
+        loading: false,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+}
+
+// Custom hook
+export function useTasks() {
+  const [state, dispatch] = useReducer(tasksReducer, initialState);
+
+  // Učitaj podatke s API-ja
+  const loadTasks = async () => {
+    dispatch({ type: 'SET_LOADING', payload: true });
+    try {
+      const tasks = await getTasks();
+      dispatch({ type: 'SET_TASKS', payload: tasks });
+      // Spremi u localStorage
+      localStorage.setItem('kanban-tasks', JSON.stringify(tasks));
+    } catch (error) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: error instanceof Error ? error.message : 'Error loading data',
+      });
+    }
+  };
+
+  // Premjesti zadatak
+  const moveTask = (taskId: number, newStatus: TaskStatus) => {
+    dispatch({ type: 'MOVE_TASK', payload: { taskId, newStatus } });
+  };
+
+  // Učitaj iz localStorage na mount
+  useEffect(() => {
+    const savedTasks = localStorage.getItem('kanban-tasks');
+    if (savedTasks) {
+      try {
+        const tasks = JSON.parse(savedTasks);
+        dispatch({ type: 'LOAD_FROM_STORAGE', payload: tasks });
+      } catch (error) {
+        console.error('Greška pri učitavanju iz localStorage:', error);
+        loadTasks(); // Fallback na API
+      }
+    } else {
+      loadTasks(); // Prvi put učitaj s API-ja
+    }
+  }, []);
+
+  // Spremi u localStorage kad se tasks promijene
+  useEffect(() => {
+    if (state.tasks.length > 0) {
+      localStorage.setItem('kanban-tasks', JSON.stringify(state.tasks));
+    }
+  }, [state.tasks]);
+
+  return {
+    ...state,
+    loadTasks,
+    moveTask,
+  };
+}

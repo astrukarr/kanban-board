@@ -1,7 +1,21 @@
 import type { TaskStatus, Task } from '@/types';
 
-// enable in tsconfig: "resolveJsonModule": true, "esModuleInterop": true
-import DATA from '../../data/todos.json';
+// Fetch funkcija za dohvaćanje podataka s jsonplaceholder
+async function fetchTodos() {
+  try {
+    const response = await fetch(
+      'https://jsonplaceholder.typicode.com/todos?_limit=12'
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching todos:', error);
+    throw error;
+  }
+}
 
 function modToStatus(id: number): TaskStatus {
   const m = id % 3;
@@ -10,14 +24,29 @@ function modToStatus(id: number): TaskStatus {
   return 'completed'; // Success/green (Completed)
 }
 
-export const tasks: Task[] = (DATA as any[]).map(t => ({
-  id: t.id,
-  title: t.title,
-  status: modToStatus(t.id),
-}));
+// Async funkcija za dohvaćanje i mapiranje podataka
+export async function getTasks(): Promise<Task[]> {
+  const data = await fetchTodos();
+  return data.map((t: any) => ({
+    id: t.id,
+    title: t.title,
+    status: modToStatus(t.id),
+  }));
+}
 
+// Funkcija za kreiranje columns objekta
+export function createColumns(tasks: Task[]) {
+  return {
+    todo: tasks.filter(t => t.status === 'todo'),
+    in_progress: tasks.filter(t => t.status === 'in_progress'),
+    completed: tasks.filter(t => t.status === 'completed'),
+  };
+}
+
+// Export za kompatibilnost s postojećim kodom (trenutno prazan)
+export const tasks: Task[] = [];
 export const columns = {
-  todo: tasks.filter(t => t.status === 'todo'),
-  in_progress: tasks.filter(t => t.status === 'in_progress'),
-  completed: tasks.filter(t => t.status === 'completed'),
+  todo: [],
+  in_progress: [],
+  completed: [],
 };

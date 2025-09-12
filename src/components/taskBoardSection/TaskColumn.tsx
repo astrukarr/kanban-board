@@ -1,3 +1,6 @@
+'use client';
+
+import { useDroppable } from '@dnd-kit/core';
 import { TaskColumnProps } from '@/types';
 import { getHeaderStyle } from '@/utils';
 import TaskCard from '../TaskCard/Card';
@@ -5,9 +8,17 @@ import AddTaskButton from '../buttons/AddTaskButton';
 
 export default function TaskColumn({ title, status, items }: TaskColumnProps) {
   const headerStyle = getHeaderStyle(status);
+  const { setNodeRef, isOver } = useDroppable({
+    id: status,
+  });
 
   return (
-    <section className="box-border flex flex-col rounded-[32px] border border-slate-200 bg-slate-50 p-4">
+    <section
+      ref={setNodeRef}
+      className={`box-border flex flex-col rounded-[32px] border border-slate-200 bg-slate-50 p-4 transition-colors ${
+        isOver ? 'bg-slate-100 border-slate-300' : ''
+      }`}
+    >
       <div className="flex items-center justify-between">
         <div className="flex max-w-[328px] items-center gap-2">
           <span
