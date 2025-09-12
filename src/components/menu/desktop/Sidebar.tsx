@@ -1,6 +1,7 @@
 import { SidebarItemProps } from '@/types';
-import Item from '../sidebar/Item';
+
 import Image from 'next/image';
+import Item from './Item';
 
 const TOP_ITEMS: SidebarItemProps[] = [
   { id: 'home', src: '/static/icons/Home.svg', alt: 'Home' },

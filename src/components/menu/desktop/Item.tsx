@@ -1,4 +1,4 @@
-import type { SidebarItemProps } from '../../types';
+import { SidebarItemProps } from '@/types';
 import Image from 'next/image';
 
 export default function Item({ src, alt }: SidebarItemProps) {

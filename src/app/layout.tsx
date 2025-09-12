@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Sidebar from '@/components/sidebar/Sidebar';
-import Header from '@/components/header/Header';
+import Toolbar from '@/components/toolbar/Toolbar';
+import MobileHeader from '@/components/menu/mobile/MobileHeader';
+import Sidebar from '@/components/menu/desktop/Sidebar';
 
 export const metadata: Metadata = {
   title: 'Kanban Board',
@@ -23,11 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <div className="min-h-screen flex">
+        <div className="min-h-screen flex flex-col md:flex-row">
+          <MobileHeader />
           <Sidebar />
-          <div className="flex-1 md:ml-20 flex flex-col">
-            <Header breadcrumbs={crumbs} />
-
+          <div className="flex-1 flex flex-col md:ml-20">
+            <div className="hidden md:block">
+              <Toolbar breadcrumbs={crumbs} />
+            </div>
             <main className="flex-1 overflow-y-auto">{children}</main>
           </div>
         </div>
