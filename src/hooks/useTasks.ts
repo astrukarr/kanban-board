@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useCallback } from 'react';
 import type { Task, TaskStatus } from '@/types';
 import { getTasks, createColumns } from '@/lib/api/todos';
 
@@ -82,13 +82,13 @@ function tasksReducer(state: TasksState, action: TasksAction): TasksState {
 export function useTasks() {
   const [state, dispatch] = useReducer(tasksReducer, initialState);
 
-  // Učitaj podatke s API-ja
-  const loadTasks = async () => {
+  // Load tasks from API - memoized to prevent unnecessary re-renders
+  const loadTasks = useCallback(async () => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
       const tasks = await getTasks();
       dispatch({ type: 'SET_TASKS', payload: tasks });
-      // Spremi u localStorage
+      // Save to localStorage
       localStorage.setItem('kanban-tasks', JSON.stringify(tasks));
     } catch (error) {
       dispatch({
@@ -96,14 +96,14 @@ export function useTasks() {
         payload: error instanceof Error ? error.message : 'Error loading data',
       });
     }
-  };
+  }, []);
 
-  // Premjesti zadatak
-  const moveTask = (taskId: number, newStatus: TaskStatus) => {
+  // Move task - memoized to prevent unnecessary re-renders
+  const moveTask = useCallback((taskId: number, newStatus: TaskStatus) => {
     dispatch({ type: 'MOVE_TASK', payload: { taskId, newStatus } });
-  };
+  }, []);
 
-  // Učitaj iz localStorage na mount
+  // Load from localStorage on mount
   useEffect(() => {
     const savedTasks = localStorage.getItem('kanban-tasks');
     if (savedTasks) {
@@ -111,15 +111,15 @@ export function useTasks() {
         const tasks = JSON.parse(savedTasks);
         dispatch({ type: 'LOAD_FROM_STORAGE', payload: tasks });
       } catch (error) {
-        console.error('Greška pri učitavanju iz localStorage:', error);
-        loadTasks(); // Fallback na API
+        console.error('Error loading from localStorage:', error);
+        loadTasks(); // Fallback to API
       }
     } else {
-      loadTasks(); // Prvi put učitaj s API-ja
+      loadTasks(); // First time load from API
     }
-  }, []);
+  }, [loadTasks]);
 
-  // Spremi u localStorage kad se tasks promijene
+  // Save to localStorage when tasks change
   useEffect(() => {
     if (state.tasks.length > 0) {
       localStorage.setItem('kanban-tasks', JSON.stringify(state.tasks));

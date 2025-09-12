@@ -6,7 +6,7 @@ import {
   DragOverlay,
   DragStartEvent,
 } from '@dnd-kit/core';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { COLUMN_CONFIG } from '@/constants';
 import { useTasks } from '@/hooks/useTasks';
 import TaskColumn from './TaskColumn';
@@ -17,27 +17,31 @@ export default function BoardWrapper() {
   const { tasks, columns, loading, error, moveTask } = useTasks();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
-  const handleDragStart = (event: DragStartEvent) => {
+  // Memoize drag handlers to prevent unnecessary re-renders
+  const handleDragStart = useCallback((event: DragStartEvent) => {
     const { active } = event;
     setActiveTask(active.data.current as Task);
-  };
+  }, []);
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
 
-    if (!over) return;
+      if (!over) return;
 
-    const taskId = active.id as number;
-    const newStatus = over.id as TaskStatus;
+      const taskId = active.id as number;
+      const newStatus = over.id as TaskStatus;
 
-    // Provjeri je li zadatak već u toj koloni
-    const currentTask = tasks.find(t => t.id === taskId);
-    if (currentTask && currentTask.status !== newStatus) {
-      moveTask(taskId, newStatus);
-    }
+      // Check if task is already in that column
+      const currentTask = tasks.find(t => t.id === taskId);
+      if (currentTask && currentTask.status !== newStatus) {
+        moveTask(taskId, newStatus);
+      }
 
-    setActiveTask(null);
-  };
+      setActiveTask(null);
+    },
+    [tasks, moveTask]
+  );
 
   if (loading) {
     return (

@@ -1,7 +1,16 @@
 import Header from '@/components/header/Header';
-import ProjectCard from '@/components/projects/ProjectCard';
-import EmptyState from '@/components/projects/EmptyState';
 import { getProjectsDataSync } from '@/lib/cms/projects';
+import dynamic from 'next/dynamic';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+
+// Dynamically import project components to reduce initial bundle size
+const ProjectCard = dynamic(() => import('@/components/projects/ProjectCard'), {
+  loading: () => <LoadingSkeleton variant="projectCard" />,
+});
+
+const EmptyState = dynamic(() => import('@/components/projects/EmptyState'), {
+  loading: () => <LoadingSkeleton variant="emptyState" />,
+});
 
 export default function ProjectsPage() {
   const data = getProjectsDataSync();

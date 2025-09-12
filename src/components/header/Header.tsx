@@ -21,6 +21,8 @@ export default function Header({ data, currentPage = 'home' }: HeaderProps) {
             width={data.logo.width}
             height={data.logo.height}
             className="md:w-12 md:h-12 mt-2"
+            priority
+            loading="eager"
           />
           <Image
             src={data.name.src}
@@ -28,6 +30,8 @@ export default function Header({ data, currentPage = 'home' }: HeaderProps) {
             width={data.name.width}
             height={data.name.height}
             className="md:w-24 md:h-10"
+            priority
+            loading="eager"
           />
         </Link>
 

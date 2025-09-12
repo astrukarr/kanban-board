@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getStatusColor, getProjectColor } from '@/utils/colorHelpers';
@@ -7,7 +8,17 @@ type ProjectCardProps = {
   project: CMSProject;
 };
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+function ProjectCard({ project }: ProjectCardProps) {
+  // Memoize color calculations to avoid recalculation on every render
+  const statusColor = useMemo(
+    () => getStatusColor(project.status),
+    [project.status]
+  );
+  const projectColor = useMemo(
+    () => getProjectColor(project.color),
+    [project.color]
+  );
+
   return (
     <Link
       key={project.id}
@@ -17,7 +28,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
         {/* Project Icon */}
         <div
-          className={`w-16 h-16 ${getProjectColor(project.color)} rounded-2xl flex items-center justify-center mb-4`}
+          className={`w-16 h-16 ${projectColor} rounded-2xl flex items-center justify-center mb-4`}
         >
           <Image
             src="/static/icons/ProjectLogo.svg"
@@ -25,6 +36,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             width={32}
             height={32}
             className="h-8 w-8"
+            loading="lazy"
           />
         </div>
 
@@ -48,6 +60,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 width={16}
                 height={16}
                 className="h-4 w-4"
+                loading="lazy"
               />
               <span>{project.tasksCount} tasks</span>
             </div>
@@ -58,6 +71,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 width={16}
                 height={16}
                 className="h-4 w-4"
+                loading="lazy"
               />
               <span>{project.teamSize} members</span>
             </div>
@@ -67,7 +81,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         {/* Status Badge */}
         <div className="flex items-center justify-between">
           <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(project.status)}`}
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor}`}
           >
             {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
           </span>
@@ -77,9 +91,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             width={16}
             height={16}
             className="h-4 w-4 text-slate-400 group-hover:text-indigo-600 transition-colors"
+            loading="lazy"
           />
         </div>
       </div>
     </Link>
   );
 }
+
+export default React.memo(ProjectCard);

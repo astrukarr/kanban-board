@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "analyze": "ANALYZE=true npm run build",
+    "bundle-analysis": "node scripts/bundle-analysis.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.5.3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -29,6 +32,7 @@
     "eslint-config-next": "15.5.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "lighthouse": "^12.8.2",
     "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "typescript": "^5"

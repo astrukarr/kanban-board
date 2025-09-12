@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getStatusColor, getProjectColor } from '@/utils/colorHelpers';
@@ -7,13 +8,23 @@ type RecentProjectCardProps = {
   project: CMSRecentProject;
 };
 
-export default function RecentProjectCard({ project }: RecentProjectCardProps) {
+function RecentProjectCard({ project }: RecentProjectCardProps) {
+  // Memoize color calculations to avoid recalculation on every render
+  const statusColor = useMemo(
+    () => getStatusColor(project.status),
+    [project.status]
+  );
+  const projectColor = useMemo(
+    () => getProjectColor(project.color),
+    [project.color]
+  );
+
   return (
     <Link href={`/project/${project.id}`} className="group block">
       <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
         {/* Project Icon */}
         <div
-          className={`w-12 h-12 ${getProjectColor(project.color)} rounded-xl flex items-center justify-center mb-3`}
+          className={`w-12 h-12 ${projectColor} rounded-xl flex items-center justify-center mb-3`}
         >
           <Image
             src="/static/icons/ProjectLogo.svg"
@@ -21,6 +32,7 @@ export default function RecentProjectCard({ project }: RecentProjectCardProps) {
             width={24}
             height={24}
             className="h-6 w-6"
+            loading="lazy"
           />
         </div>
 
@@ -30,7 +42,7 @@ export default function RecentProjectCard({ project }: RecentProjectCardProps) {
             {project.name}
           </h3>
           <span
-            className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(project.status)}`}
+            className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColor}`}
           >
             {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
           </span>
@@ -45,3 +57,5 @@ export default function RecentProjectCard({ project }: RecentProjectCardProps) {
     </Link>
   );
 }
+
+export default React.memo(RecentProjectCard);

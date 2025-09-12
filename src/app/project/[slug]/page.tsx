@@ -1,5 +1,14 @@
-import BoardWrapper from '@/components/taskBoardSection/BoardWrapper';
+import dynamic from 'next/dynamic';
 import SectionWrapper from '@/components/projectInfoSection/SectionWrapper';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+
+// Dynamically import BoardWrapper to reduce initial bundle size
+const BoardWrapper = dynamic(
+  () => import('@/components/taskBoardSection/BoardWrapper'),
+  {
+    loading: () => <LoadingSkeleton variant="board" />,
+  }
+);
 
 interface ProjectPageProps {
   params: Promise<{
