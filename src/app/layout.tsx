@@ -28,9 +28,7 @@ export default function RootLayout({
           <div className="flex-1 md:ml-20 flex flex-col">
             <Header breadcrumbs={crumbs} />
 
-            <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
-              {children}
-            </main>
+            <main className="flex-1 overflow-y-auto">{children}</main>
           </div>
         </div>
       </body>

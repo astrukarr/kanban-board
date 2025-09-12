@@ -29,7 +29,7 @@ export default function HeaderBar({ breadcrumbs }: HeaderBarProps) {
           <button
             type="button"
             aria-label="Search"
-            className="grid h-10 w-10 place-items-center rounded-full hover:bg-slate-100"
+            className="grid h-10 w-10 place-items-center rounded-full hover:bg-slate-100 cursor-pointer"
           >
             <Image
               src="/static/icons/Search.svg"

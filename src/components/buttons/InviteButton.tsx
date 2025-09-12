@@ -3,7 +3,7 @@ export default function InviteButton() {
   return (
     <button
       type="button"
-      className="ml-2 inline-flex h-10 items-center gap-2 rounded-[999px] border border-slate-300 px-4 font-bold text-sm text-slate-600 hover:bg-white"
+      className="ml-2 inline-flex h-10 items-center gap-2 rounded-[999px] border border-slate-300 px-4 font-bold text-sm text-slate-600 hover:bg-white cursor-pointer"
     >
       <span>Invite</span>
       <Image

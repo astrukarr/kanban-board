@@ -14,3 +14,9 @@ export type Crumb = {
 export type BreadcrumbsProps = {
   items: Crumb[];
 };
+
+export type MainAction = { id: string; icon: string; label: string };
+
+export type ViewTabId = 'grid' | 'list' | 'column' | 'row';
+
+export type ViewTab = { id: ViewTabId; icon: string; label: string };
