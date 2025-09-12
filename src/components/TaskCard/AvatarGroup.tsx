@@ -1,25 +1,19 @@
-// components/common/AvatarGroup.tsx
-// Expects files: /public/avatars/Avatar1.png ... Avatar7.png (or adjust basePath/ext)
+import { AvatarGroupProps } from '@/types';
+import { AVATAR_PATHS } from '@/constants';
 import Image from 'next/image';
 
 export default function AvatarGroup({
   count = 2,
-  ids, // e.g. [3, 1, 7] to pick specific avatars
-  basePath = '/static/images/Avatar',
-  ext = 'png',
+  ids,
+  basePath = AVATAR_PATHS.basePath,
+  ext = AVATAR_PATHS.ext,
   className = '',
-}: {
-  count?: number;
-  ids?: number[]; // numbers 1..7
-  basePath?: string; // change if your path differs
-  ext?: 'png' | 'jpg' | 'jpeg' | 'webp' | 'svg';
-  className?: string;
-}) {
+}: AvatarGroupProps) {
   const picks = (
     ids && ids.length ? ids : Array.from({ length: count }, (_, i) => i + 1)
   )
     .slice(0, count)
-    .map(n => `${basePath}${((n - 1) % 7) + 1}.${ext}`);
+    .map(n => `${basePath}${((n - 1) % AVATAR_PATHS.maxCount) + 1}.${ext}`);
 
   return (
     <div className={`flex -space-x-2 ${className}`}>

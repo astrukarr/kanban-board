@@ -1,7 +1,4 @@
-// Map JSON -> Task { id, title, status } using id % 3
-
-export type TaskStatus = 'todo' | 'in_progress' | 'completed';
-export type Task = { id: number; title: string; status: TaskStatus };
+import type { TaskStatus, Task } from '@/types';
 
 // enable in tsconfig: "resolveJsonModule": true, "esModuleInterop": true
 import DATA from '../../data/todos.json';
