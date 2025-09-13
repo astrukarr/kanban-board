@@ -33,9 +33,10 @@ export type MobileStatusTab = {
 export type TaskStatus = 'todo' | 'in_progress' | 'completed';
 
 export type Task = {
-  id: number;
+  id: number | string;
   title: string;
   status: TaskStatus;
+  description?: string;
 };
 
 // Task Board types
@@ -43,10 +44,11 @@ export type TaskColumnProps = {
   title: string;
   status: TaskStatus;
   items: Task[];
+  onAddTask: (status: TaskStatus) => void;
 };
 
 export type TaskCardProps = {
-  id: number;
+  id: number | string;
   title: string;
   status: TaskStatus;
 };

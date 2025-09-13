@@ -6,7 +6,12 @@ import { getHeaderStyle } from '@/utils';
 import TaskCard from '../TaskCard/Card';
 import AddTaskButton from '../buttons/AddTaskButton';
 
-export default function TaskColumn({ title, status, items }: TaskColumnProps) {
+export default function TaskColumn({
+  title,
+  status,
+  items,
+  onAddTask,
+}: TaskColumnProps) {
   const headerStyle = getHeaderStyle(status);
   const { setNodeRef, isOver } = useDroppable({
     id: status,
@@ -31,7 +36,7 @@ export default function TaskColumn({ title, status, items }: TaskColumnProps) {
             </span>
           </h2>
         </div>
-        <AddTaskButton />
+        <AddTaskButton status={status} onClick={() => onAddTask(status)} />
       </div>
 
       <div className="mt-4 flex flex-col gap-3">

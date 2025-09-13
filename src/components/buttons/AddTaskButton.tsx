@@ -1,10 +1,17 @@
 import Image from 'next/image';
+import type { TaskStatus } from '@/types';
 
-export default function AddTaskButton() {
+type AddTaskButtonProps = {
+  status: TaskStatus;
+  onClick: () => void;
+};
+
+export default function AddTaskButton({ status, onClick }: AddTaskButtonProps) {
   return (
     <button
       type="button"
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 cursor-pointer"
+      onClick={onClick}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 cursor-pointer hover:bg-slate-50 transition-colors"
       aria-label="Add task"
       title="Add task"
     >

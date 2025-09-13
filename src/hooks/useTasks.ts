@@ -20,7 +20,9 @@ export type TasksAction =
   | { type: 'SET_ERROR'; payload: string | null }
   | { type: 'SET_TASKS'; payload: Task[] }
   | { type: 'MOVE_TASK'; payload: { taskId: number; newStatus: TaskStatus } }
-  | { type: 'LOAD_FROM_STORAGE'; payload: Task[] };
+  | { type: 'LOAD_FROM_STORAGE'; payload: Task[] }
+  | { type: 'ADD_TASK'; payload: Task }
+  | { type: 'REMOVE_TASK'; payload: number };
 
 // Početni state
 const initialState: TasksState = {
@@ -73,6 +75,24 @@ function tasksReducer(state: TasksState, action: TasksAction): TasksState {
         error: null,
       };
 
+    case 'ADD_TASK':
+      const newTasks = [...state.tasks, action.payload];
+      return {
+        ...state,
+        tasks: newTasks,
+        columns: createColumns(newTasks),
+      };
+
+    case 'REMOVE_TASK':
+      const filteredTasks = state.tasks.filter(
+        task => task.id !== action.payload
+      );
+      return {
+        ...state,
+        tasks: filteredTasks,
+        columns: createColumns(filteredTasks),
+      };
+
     default:
       return state;
   }
@@ -103,6 +123,16 @@ export function useTasks() {
     dispatch({ type: 'MOVE_TASK', payload: { taskId, newStatus } });
   }, []);
 
+  // Add task - memoized to prevent unnecessary re-renders
+  const addTask = useCallback((task: Task) => {
+    dispatch({ type: 'ADD_TASK', payload: task });
+  }, []);
+
+  // Remove task - memoized to prevent unnecessary re-renders
+  const removeTask = useCallback((taskId: number) => {
+    dispatch({ type: 'REMOVE_TASK', payload: taskId });
+  }, []);
+
   // Load from localStorage on mount
   useEffect(() => {
     const savedTasks = localStorage.getItem('kanban-tasks');
@@ -130,5 +160,7 @@ export function useTasks() {
     ...state,
     loadTasks,
     moveTask,
+    addTask,
+    removeTask,
   };
 }

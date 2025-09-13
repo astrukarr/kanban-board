@@ -19,19 +19,26 @@ export function getHeaderStyle(status: TaskStatus): StatusStyleConfig {
 /**
  * Calculate comment and check counts based on task ID
  */
-export function calculateCounts(id: number): CountsConfig {
-  const comments = ((id * 3) % 21) + 1;
-  const checks = ((id * 5) % 56) + 1;
+export function calculateCounts(id: number | string): CountsConfig {
+  const numericId =
+    typeof id === 'string' ? parseInt(id.replace('temp-', '')) : id;
+  const comments = ((numericId * 3) % 21) + 1;
+  const checks = ((numericId * 5) % 56) + 1;
   return { comments, checks };
 }
 
 /**
  * Calculate progress percentage based on status and ID
  */
-export function calculateProgress(status: TaskStatus, id: number): number {
+export function calculateProgress(
+  status: TaskStatus,
+  id: number | string
+): number {
+  const numericId =
+    typeof id === 'string' ? parseInt(id.replace('temp-', '')) : id;
   if (status === 'completed') return 100;
-  if (status === 'in_progress') return 40 + (id % 40);
-  return 5 + (id % 20);
+  if (status === 'in_progress') return 40 + (numericId % 40);
+  return 5 + (numericId % 20);
 }
 
 /**
