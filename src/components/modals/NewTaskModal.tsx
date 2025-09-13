@@ -3,6 +3,7 @@ import type { Task, TaskStatus } from '@/types';
 import { NewTaskForm } from './NewTaskForm';
 import { Toast } from '@/components/ui/Toast';
 import { createTask, createTaskAPI } from '@/utils/taskCreation';
+import { createApiError } from '@/utils/errorHelpers';
 
 type NewTaskModalProps = {
   isOpen: boolean;
@@ -39,9 +40,10 @@ export const NewTaskModal = ({
 
       // Show success message
       setToast({ message: 'Task created successfully!', type: 'success' });
-    } catch {
-      // Show error message
-      setToast({ message: 'Error creating task', type: 'error' });
+    } catch (error) {
+      // Show error message with proper error handling
+      const apiError = createApiError(error);
+      setToast({ message: apiError.message, type: 'error' });
     }
 
     // Close modal

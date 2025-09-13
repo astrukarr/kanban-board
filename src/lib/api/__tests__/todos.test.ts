@@ -71,7 +71,12 @@ describe('todos API', () => {
     it('should handle API errors', async () => {
       (fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
 
-      await expect(getTasks()).rejects.toThrow('Network error');
+      try {
+        await getTasks();
+        fail('Expected getTasks to throw');
+      } catch (error: unknown) {
+        expect((error as Error).message).toContain('Network connection failed');
+      }
     });
 
     it('should handle HTTP error responses', async () => {
@@ -80,7 +85,12 @@ describe('todos API', () => {
         status: 500,
       });
 
-      await expect(getTasks()).rejects.toThrow('HTTP error! status: 500');
+      try {
+        await getTasks();
+        fail('Expected getTasks to throw');
+      } catch (error: unknown) {
+        expect((error as Error).message).toContain('Server error occurred');
+      }
     });
 
     it('should handle empty API response', async () => {

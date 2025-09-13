@@ -1,9 +1,15 @@
 import type { TaskStatus, Task } from '@/types';
+import { ENV_CONFIG, TASK_CONFIG } from '@/constants';
+import {
+  createApiError,
+  safeLocalStorageGet,
+  safeLocalStorageRemove,
+} from '@/utils/errorHelpers';
 
 // Helper function to get auth token
 function getAuthToken(): string | null {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('token');
+    return safeLocalStorageGet('token');
   }
   return null;
 }
@@ -20,15 +26,14 @@ async function fetchTodos() {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(
-      'https://jsonplaceholder.typicode.com/todos?_limit=12',
-      { headers }
-    );
+    const response = await fetch(`${ENV_CONFIG.API_BASE_URL}/todos?_limit=12`, {
+      headers,
+    });
 
     if (!response.ok) {
       if (response.status === 401) {
         // Token expired - redirect to login
-        localStorage.removeItem('token');
+        safeLocalStorageRemove('token');
         window.location.href =
           '/login?message=Session expired. Please sign in again.';
         throw new Error('Unauthorized');
@@ -40,12 +45,12 @@ async function fetchTodos() {
     return data;
   } catch (error) {
     console.error('Error fetching todos:', error);
-    throw error;
+    throw createApiError(error);
   }
 }
 
 function modToStatus(id: number): TaskStatus {
-  const m = id % 3;
+  const m = id % TASK_CONFIG.STATUS_COUNT;
   if (m === 0) return 'todo'; // Brand/indigo  (To Do)
   if (m === 1) return 'in_progress'; // Warning/amber (In Progress)
   return 'completed'; // Success/green (Completed)

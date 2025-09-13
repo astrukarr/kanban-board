@@ -1,6 +1,11 @@
 import { useReducer, useEffect, useCallback, useState } from 'react';
 import type { Task, TaskStatus } from '@/types';
 import { getTasks, createColumns } from '@/lib/api/todos';
+import {
+  safeLocalStorageSet,
+  safeLocalStorageGet,
+  createApiError,
+} from '@/utils/errorHelpers';
 
 // State tip
 export interface TasksState {
@@ -109,12 +114,13 @@ export function useTasks() {
     try {
       const tasks = await getTasks();
       dispatch({ type: 'SET_TASKS', payload: tasks });
-      // Save to localStorage
-      localStorage.setItem('kanban-tasks', JSON.stringify(tasks));
+      // Save to localStorage safely
+      safeLocalStorageSet('kanban-tasks', JSON.stringify(tasks));
     } catch (error) {
+      const apiError = createApiError(error);
       dispatch({
         type: 'SET_ERROR',
-        payload: error instanceof Error ? error.message : 'Error loading data',
+        payload: apiError.message,
       });
     }
   }, []);
@@ -138,7 +144,7 @@ export function useTasks() {
   useEffect(() => {
     setIsHydrated(true);
 
-    const savedTasks = localStorage.getItem('kanban-tasks');
+    const savedTasks = safeLocalStorageGet('kanban-tasks');
     if (savedTasks) {
       try {
         const tasks = JSON.parse(savedTasks);
@@ -155,7 +161,7 @@ export function useTasks() {
   // Save to localStorage when tasks change
   useEffect(() => {
     if (state.tasks.length > 0) {
-      localStorage.setItem('kanban-tasks', JSON.stringify(state.tasks));
+      safeLocalStorageSet('kanban-tasks', JSON.stringify(state.tasks));
     }
   }, [state.tasks]);
 

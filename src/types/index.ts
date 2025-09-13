@@ -92,3 +92,7 @@ export type ColumnConfig = {
   status: TaskStatus;
   title: string;
 };
+
+// Re-export error types
+export type { ApiError, ErrorState } from './errors';
+export { ERROR_MESSAGES, ERROR_TYPES } from './errors';

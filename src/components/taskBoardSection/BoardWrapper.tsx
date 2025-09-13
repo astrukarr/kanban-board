@@ -116,7 +116,7 @@ export default function BoardWrapper() {
               key={status}
               title={title}
               status={status}
-              items={columns[status]}
+              items={columns[status as keyof typeof columns]}
               onAddTask={handleAddTask}
             />
           ))}
