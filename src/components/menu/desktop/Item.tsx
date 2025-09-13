@@ -21,7 +21,6 @@ export default function Item({ id, src, alt }: SidebarItemProps) {
         break;
       default:
         // For other items, you can add more routes later
-        console.log(`Navigate to ${id}`);
         break;
     }
   };

@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-commit hooks
+echo "🔍 Running pre-commit checks..."
+
+# 1. Check for console.log statements
+echo "📝 Checking for console.log statements..."
+if grep -r "console\.log" src/ --exclude-dir=node_modules; then
+  echo "❌ Error: Found console.log statements! Please remove them before committing."
+  exit 1
+fi
+
+# 2. Run linting
+echo "🧹 Running ESLint..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ Linting failed! Please fix errors before committing."
+  exit 1
+fi
+
+# 3. Run tests
+echo "🧪 Running tests..."
+npm test
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed! Please fix tests before committing."
+  exit 1
+fi
+
+# 4. Build application
+echo "🏗️ Building application..."
+npm run build
+if [ $? -ne 0 ]; then
+  echo "❌ Build failed! Please fix build errors before committing."
+  exit 1
+fi
+
+echo "✅ All pre-commit checks passed!"

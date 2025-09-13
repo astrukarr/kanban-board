@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-push hooks
+echo "🚀 Running pre-push checks..."
+
+# 1. Check for console.log statements
+echo "📝 Checking for console.log statements..."
+if grep -r "console\.log" src/ --exclude-dir=node_modules; then
+  echo "❌ Error: Found console.log statements! Please remove them before pushing."
+  exit 1
+fi
+
+# 2. Run linting
+echo "🧹 Running ESLint..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ Linting failed! Please fix errors before pushing."
+  exit 1
+fi
+
+# 3. Run tests with coverage
+echo "🧪 Running tests with coverage..."
+npm test -- --coverage --coverageThreshold.global.statements=80
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed or coverage too low! Please fix before pushing."
+  exit 1
+fi
+
+# 4. Build application
+echo "🏗️ Building application..."
+npm run build
+if [ $? -ne 0 ]; then
+  echo "❌ Build failed! Please fix build errors before pushing."
+  exit 1
+fi
+
+echo "✅ All pre-push checks passed! Ready to push to GitHub."
