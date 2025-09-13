@@ -1,18 +1,16 @@
 'use client';
 
+import React, { useMemo } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { TaskColumnProps } from '@/types';
 import { getHeaderStyle } from '@/utils';
 import TaskCard from '../TaskCard/Card';
 import AddTaskButton from '../buttons/AddTaskButton';
 
-export default function TaskColumn({
-  title,
-  status,
-  items,
-  onAddTask,
-}: TaskColumnProps) {
-  const headerStyle = getHeaderStyle(status);
+function TaskColumn({ title, status, items, onAddTask }: TaskColumnProps) {
+  // Memoize header style calculation to prevent unnecessary recalculations
+  const headerStyle = useMemo(() => getHeaderStyle(status), [status]);
+
   const { setNodeRef, isOver } = useDroppable({
     id: status,
   });
@@ -52,3 +50,6 @@ export default function TaskColumn({
     </section>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+export default React.memo(TaskColumn);

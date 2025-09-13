@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useCallback, useState } from 'react';
+import { useReducer, useEffect, useCallback, useState, useMemo } from 'react';
 import type { Task, TaskStatus } from '@/types';
 import { getTasks, createColumns } from '@/lib/api/todos';
 import {
@@ -67,7 +67,7 @@ function tasksReducer(state: TasksState, action: TasksAction): TasksState {
       return {
         ...state,
         tasks: updatedTasks,
-        columns: createColumns(updatedTasks),
+        // Don't recalculate columns here - let useMemo handle it
       };
     }
 
@@ -85,7 +85,7 @@ function tasksReducer(state: TasksState, action: TasksAction): TasksState {
       return {
         ...state,
         tasks: newTasks,
-        columns: createColumns(newTasks),
+        // Don't recalculate columns here - let useMemo handle it
       };
 
     case 'REMOVE_TASK':
@@ -95,7 +95,7 @@ function tasksReducer(state: TasksState, action: TasksAction): TasksState {
       return {
         ...state,
         tasks: filteredTasks,
-        columns: createColumns(filteredTasks),
+        // Don't recalculate columns here - let useMemo handle it
       };
 
     default:
@@ -107,6 +107,9 @@ function tasksReducer(state: TasksState, action: TasksAction): TasksState {
 export function useTasks() {
   const [state, dispatch] = useReducer(tasksReducer, initialState);
   const [isHydrated, setIsHydrated] = useState(false);
+
+  // Memoize columns calculation to prevent unnecessary recalculations
+  const columns = useMemo(() => createColumns(state.tasks), [state.tasks]);
 
   // Load tasks from API - memoized to prevent unnecessary re-renders
   const loadTasks = useCallback(async () => {
@@ -167,6 +170,7 @@ export function useTasks() {
 
   return {
     ...state,
+    columns, // Use memoized columns instead of state.columns
     isHydrated,
     loadTasks,
     moveTask,

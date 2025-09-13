@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useMemo } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { TaskCardProps } from '@/types';
 import { STATUS_LABELS } from '@/constants';
@@ -8,10 +9,11 @@ import ProgressBar from './ProgressBar';
 import AvatarGroup from './AvatarGroup';
 import Image from 'next/image';
 
-export default function TaskCard({ id, title, status }: TaskCardProps) {
-  const { comments, checks } = calculateCounts(id);
-  const progress = calculateProgress(status, id);
-  const colorConfig = getColorConfig(status);
+function TaskCard({ id, title, status }: TaskCardProps) {
+  // Memoize expensive calculations to prevent unnecessary recalculations
+  const { comments, checks } = useMemo(() => calculateCounts(id), [id]);
+  const progress = useMemo(() => calculateProgress(status, id), [status, id]);
+  const colorConfig = useMemo(() => getColorConfig(status), [status]);
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -84,3 +86,6 @@ export default function TaskCard({ id, title, status }: TaskCardProps) {
     </div>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+export default React.memo(TaskCard);
