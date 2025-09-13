@@ -1,5 +1,5 @@
 import { getTasks, createColumns } from '../todos';
-import type { Task, TaskStatus } from '@/types';
+import type { Task } from '@/types';
 
 // Mock fetch globally
 global.fetch = jest.fn();

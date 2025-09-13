@@ -22,7 +22,7 @@ export default function BoardWrapper() {
     error,
     moveTask,
     addTask,
-    removeTask,
+    // removeTask, // TODO: Implement task removal functionality
     isHydrated,
   } = useTasks();
   const [activeTask, setActiveTask] = useState<Task | null>(null);

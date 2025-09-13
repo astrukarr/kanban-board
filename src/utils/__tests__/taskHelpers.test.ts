@@ -5,7 +5,6 @@ import {
   getColorConfig,
   clamp,
 } from '../taskHelpers';
-import type { TaskStatus } from '@/types';
 
 describe('taskHelpers', () => {
   describe('getHeaderStyle', () => {

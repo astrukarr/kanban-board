@@ -39,7 +39,7 @@ export const NewTaskModal = ({
 
       // Show success message
       setToast({ message: 'Task created successfully!', type: 'success' });
-    } catch (error) {
+    } catch {
       // Show error message
       setToast({ message: 'Error creating task', type: 'error' });
     }

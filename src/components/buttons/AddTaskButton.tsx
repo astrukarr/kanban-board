@@ -6,7 +6,7 @@ type AddTaskButtonProps = {
   onClick: () => void;
 };
 
-export default function AddTaskButton({ status, onClick }: AddTaskButtonProps) {
+export default function AddTaskButton({ onClick }: AddTaskButtonProps) {
   return (
     <button
       type="button"
