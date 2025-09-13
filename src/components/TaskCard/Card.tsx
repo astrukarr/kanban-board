@@ -37,7 +37,7 @@ function TaskCard({ id, title, status }: TaskCardProps) {
       style={style}
       {...listeners}
       {...attributes}
-      className={`rounded-3xl border border-slate-200 bg-white p-3 shadow-md cursor-pointer transition-opacity ${
+      className={`rounded-3xl border border-slate-200 bg-white p-3 shadow-md cursor-pointer transition-opacity min-h-[140px] w-full ${
         isDragging ? 'opacity-50' : ''
       }`}
     >
@@ -67,6 +67,8 @@ function TaskCard({ id, title, status }: TaskCardProps) {
               width={20}
               height={20}
               className="h-5 w-5"
+              loading="eager"
+              priority={false}
             />
             <span className="text-sm font-semibold">{comments}</span>
           </div>
@@ -77,6 +79,8 @@ function TaskCard({ id, title, status }: TaskCardProps) {
               width={20}
               height={20}
               className="h-5 w-5"
+              loading="eager"
+              priority={false}
             />
 
             <span className="text-sm font-semibold">{checks}</span>

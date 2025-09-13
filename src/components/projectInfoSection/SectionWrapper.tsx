@@ -24,6 +24,8 @@ export default function SectionWrapper() {
               height={64}
               className="h-24 w-24"
               draggable={false}
+              priority={true}
+              loading="eager"
             />
           </div>
 
@@ -57,6 +59,8 @@ export default function SectionWrapper() {
               height={42.67}
               className="h-[42.67px] w-[42.67px]"
               draggable={false}
+              priority={true}
+              loading="eager"
             />
           </div>
         </div>

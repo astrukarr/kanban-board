@@ -18,7 +18,7 @@ function TaskColumn({ title, status, items, onAddTask }: TaskColumnProps) {
   return (
     <section
       ref={setNodeRef}
-      className={`box-border flex flex-col rounded-[32px] border border-slate-200 bg-slate-50 p-4 transition-colors ${
+      className={`box-border flex flex-col rounded-[32px] border border-slate-200 bg-slate-50 p-4 transition-colors min-h-[400px] w-full ${
         isOver ? 'bg-slate-100 border-slate-300' : ''
       }`}
     >

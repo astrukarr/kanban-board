@@ -6,14 +6,20 @@ import {
   DragOverlay,
   DragStartEvent,
 } from '@dnd-kit/core';
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback, Suspense, lazy } from 'react';
 import { COLUMN_CONFIG } from '@/constants';
 import { useTasks } from '@/hooks/useTasks';
 import TaskColumn from './TaskColumn';
 import TaskCard from '../TaskCard/Card';
-import { NewTaskModal } from '@/components/modals/NewTaskModal';
 import Loading from '@/components/ui/Loading';
 import type { TaskStatus, Task } from '@/types';
+
+// Lazy load heavy modal component
+const NewTaskModal = lazy(() =>
+  import('@/components/modals/NewTaskModal').then(module => ({
+    default: module.NewTaskModal,
+  }))
+);
 
 export default function BoardWrapper() {
   const {
@@ -70,7 +76,7 @@ export default function BoardWrapper() {
 
   if (!isHydrated) {
     return (
-      <div className="w-full p-4 sm:p-6 md:p-8">
+      <div className="w-full p-4 sm:p-6 md:p-8 min-h-[600px]">
         <Loading message="Loading tasks..." />
       </div>
     );
@@ -78,7 +84,7 @@ export default function BoardWrapper() {
 
   if (loading) {
     return (
-      <div className="w-full p-4 sm:p-6 md:p-8">
+      <div className="w-full p-4 sm:p-6 md:p-8 min-h-[600px]">
         <Loading message="Loading tasks..." />
       </div>
     );
@@ -86,7 +92,7 @@ export default function BoardWrapper() {
 
   if (error) {
     return (
-      <div className="w-full p-4 sm:p-6 md:p-8">
+      <div className="w-full p-4 sm:p-6 md:p-8 min-h-[600px]">
         <Loading variant="error" message={`Error: ${error}`} />
       </div>
     );
@@ -129,12 +135,14 @@ export default function BoardWrapper() {
       </DndContext>
 
       {/* Modal */}
-      <NewTaskModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onTaskCreated={handleTaskCreated}
-        defaultStatus={selectedStatus}
-      />
+      <Suspense fallback={<Loading message="Loading modal..." />}>
+        <NewTaskModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onTaskCreated={handleTaskCreated}
+          defaultStatus={selectedStatus}
+        />
+      </Suspense>
     </div>
   );
 }
