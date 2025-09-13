@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { generateDummyToken, setToken } from '@/utils/auth';
+import Loading from '@/components/ui/Loading';
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +98,7 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-          <div className="text-lg text-slate-600">Loading...</div>
+          <Loading message="Loading..." />
         </div>
       }
     >

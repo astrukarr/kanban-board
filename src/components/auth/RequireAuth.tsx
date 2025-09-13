@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Loading from '@/components/ui/Loading';
 
 type RequireAuthProps = {
   children: React.ReactNode;
@@ -29,7 +30,7 @@ export default function RequireAuth({ children }: RequireAuthProps) {
   if (isAuthenticated === null) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-slate-600">Checking authentication...</div>
+        <Loading message="Checking authentication..." />
       </div>
     );
   }

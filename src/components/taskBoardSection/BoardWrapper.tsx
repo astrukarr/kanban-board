@@ -12,6 +12,7 @@ import { useTasks } from '@/hooks/useTasks';
 import TaskColumn from './TaskColumn';
 import TaskCard from '../TaskCard/Card';
 import { NewTaskModal } from '@/components/modals/NewTaskModal';
+import Loading from '@/components/ui/Loading';
 import type { TaskStatus, Task } from '@/types';
 
 export default function BoardWrapper() {
@@ -70,9 +71,7 @@ export default function BoardWrapper() {
   if (!isHydrated) {
     return (
       <div className="w-full p-4 sm:p-6 md:p-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-lg text-slate-600">Loading tasks...</div>
-        </div>
+        <Loading message="Loading tasks..." />
       </div>
     );
   }
@@ -80,9 +79,7 @@ export default function BoardWrapper() {
   if (loading) {
     return (
       <div className="w-full p-4 sm:p-6 md:p-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-lg text-slate-600">Loading tasks...</div>
-        </div>
+        <Loading message="Loading tasks..." />
       </div>
     );
   }
@@ -90,9 +87,7 @@ export default function BoardWrapper() {
   if (error) {
     return (
       <div className="w-full p-4 sm:p-6 md:p-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-lg text-red-600">Error: {error}</div>
-        </div>
+        <Loading variant="error" message={`Error: ${error}`} />
       </div>
     );
   }
