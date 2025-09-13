@@ -60,7 +60,7 @@ function modToStatus(id: number): TaskStatus {
 export async function getTasks(): Promise<Task[]> {
   const data = await fetchTodos();
   return data.map((t: { id: number; title: string }) => ({
-    id: t.id,
+    id: t.id.toString(), // Convert number to string
     title: t.title,
     status: modToStatus(t.id),
   }));

@@ -37,7 +37,7 @@ describe('todos API', () => {
       );
       expect(result).toHaveLength(6);
       expect(result[0]).toEqual({
-        id: 1,
+        id: '1',
         title: 'Task 1',
         status: 'in_progress', // 1 % 3 = 1 -> in_progress
       });
@@ -118,12 +118,12 @@ describe('todos API', () => {
       const result = await getTasks();
 
       expect(result[0]).toEqual({
-        id: 123,
+        id: '123',
         title: 'Complex Task Title',
         status: 'todo', // 123 % 3 = 0 -> todo
       });
       expect(result[1]).toEqual({
-        id: 456,
+        id: '456',
         title: 'Another Task',
         status: 'todo', // 456 % 3 = 0 -> todo
       });
@@ -133,11 +133,11 @@ describe('todos API', () => {
   describe('createColumns', () => {
     it('should group tasks by status correctly', () => {
       const tasks: Task[] = [
-        { id: 1, title: 'Task 1', status: 'todo' },
-        { id: 2, title: 'Task 2', status: 'in_progress' },
-        { id: 3, title: 'Task 3', status: 'completed' },
-        { id: 4, title: 'Task 4', status: 'todo' },
-        { id: 5, title: 'Task 5', status: 'in_progress' },
+        { id: '1', title: 'Task 1', status: 'todo' },
+        { id: '2', title: 'Task 2', status: 'in_progress' },
+        { id: '3', title: 'Task 3', status: 'completed' },
+        { id: '4', title: 'Task 4', status: 'todo' },
+        { id: '5', title: 'Task 5', status: 'in_progress' },
       ];
 
       const result = createColumns(tasks);
@@ -147,17 +147,17 @@ describe('todos API', () => {
       expect(result.completed).toHaveLength(1);
 
       expect(result.todo).toEqual([
-        { id: 1, title: 'Task 1', status: 'todo' },
-        { id: 4, title: 'Task 4', status: 'todo' },
+        { id: '1', title: 'Task 1', status: 'todo' },
+        { id: '4', title: 'Task 4', status: 'todo' },
       ]);
 
       expect(result.in_progress).toEqual([
-        { id: 2, title: 'Task 2', status: 'in_progress' },
-        { id: 5, title: 'Task 5', status: 'in_progress' },
+        { id: '2', title: 'Task 2', status: 'in_progress' },
+        { id: '5', title: 'Task 5', status: 'in_progress' },
       ]);
 
       expect(result.completed).toEqual([
-        { id: 3, title: 'Task 3', status: 'completed' },
+        { id: '3', title: 'Task 3', status: 'completed' },
       ]);
     });
 
@@ -171,9 +171,9 @@ describe('todos API', () => {
 
     it('should handle tasks with only one status', () => {
       const tasks: Task[] = [
-        { id: 1, title: 'Task 1', status: 'todo' },
-        { id: 2, title: 'Task 2', status: 'todo' },
-        { id: 3, title: 'Task 3', status: 'todo' },
+        { id: '1', title: 'Task 1', status: 'todo' },
+        { id: '2', title: 'Task 2', status: 'todo' },
+        { id: '3', title: 'Task 3', status: 'todo' },
       ];
 
       const result = createColumns(tasks);
@@ -185,12 +185,12 @@ describe('todos API', () => {
 
     it('should handle tasks with mixed statuses', () => {
       const tasks: Task[] = [
-        { id: 1, title: 'Task 1', status: 'todo' },
-        { id: 2, title: 'Task 2', status: 'in_progress' },
-        { id: 3, title: 'Task 3', status: 'completed' },
-        { id: 4, title: 'Task 4', status: 'todo' },
-        { id: 5, title: 'Task 5', status: 'completed' },
-        { id: 6, title: 'Task 6', status: 'in_progress' },
+        { id: '1', title: 'Task 1', status: 'todo' },
+        { id: '2', title: 'Task 2', status: 'in_progress' },
+        { id: '3', title: 'Task 3', status: 'completed' },
+        { id: '4', title: 'Task 4', status: 'todo' },
+        { id: '5', title: 'Task 5', status: 'completed' },
+        { id: '6', title: 'Task 6', status: 'in_progress' },
       ];
 
       const result = createColumns(tasks);
@@ -202,16 +202,16 @@ describe('todos API', () => {
 
     it('should preserve task order within each column', () => {
       const tasks: Task[] = [
-        { id: 1, title: 'First Todo', status: 'todo' },
-        { id: 2, title: 'Second Todo', status: 'todo' },
-        { id: 3, title: 'Third Todo', status: 'todo' },
+        { id: '1', title: 'First Todo', status: 'todo' },
+        { id: '2', title: 'Second Todo', status: 'todo' },
+        { id: '3', title: 'Third Todo', status: 'todo' },
       ];
 
       const result = createColumns(tasks);
 
-      expect(result.todo[0].id).toBe(1);
-      expect(result.todo[1].id).toBe(2);
-      expect(result.todo[2].id).toBe(3);
+      expect(result.todo[0].id).toBe('1');
+      expect(result.todo[1].id).toBe('2');
+      expect(result.todo[2].id).toBe('3');
     });
   });
 });

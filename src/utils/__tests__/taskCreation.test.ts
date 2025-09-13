@@ -105,13 +105,13 @@ describe('taskCreation', () => {
           }),
         }
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ id: '201' });
     });
 
     it('should set completed: true for completed status', async () => {
       (fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
-        json: jest.fn().mockResolvedValueOnce({}),
+        json: jest.fn().mockResolvedValueOnce({ id: 201 }),
       });
 
       const formData = {
@@ -136,7 +136,7 @@ describe('taskCreation', () => {
     it('should set completed: false for non-completed status', async () => {
       (fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
-        json: jest.fn().mockResolvedValueOnce({}),
+        json: jest.fn().mockResolvedValueOnce({ id: 202 }),
       });
 
       const formData = {

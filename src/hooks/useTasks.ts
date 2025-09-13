@@ -24,10 +24,10 @@ export type TasksAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
   | { type: 'SET_TASKS'; payload: Task[] }
-  | { type: 'MOVE_TASK'; payload: { taskId: number; newStatus: TaskStatus } }
+  | { type: 'MOVE_TASK'; payload: { taskId: string; newStatus: TaskStatus } }
   | { type: 'LOAD_FROM_STORAGE'; payload: Task[] }
   | { type: 'ADD_TASK'; payload: Task }
-  | { type: 'REMOVE_TASK'; payload: number };
+  | { type: 'REMOVE_TASK'; payload: string };
 
 // Početni state
 const initialState: TasksState = {
@@ -126,7 +126,7 @@ export function useTasks() {
   }, []);
 
   // Move task - memoized to prevent unnecessary re-renders
-  const moveTask = useCallback((taskId: number, newStatus: TaskStatus) => {
+  const moveTask = useCallback((taskId: string, newStatus: TaskStatus) => {
     dispatch({ type: 'MOVE_TASK', payload: { taskId, newStatus } });
   }, []);
 
@@ -136,7 +136,7 @@ export function useTasks() {
   }, []);
 
   // Remove task - memoized to prevent unnecessary re-renders
-  const removeTask = useCallback((taskId: number) => {
+  const removeTask = useCallback((taskId: string) => {
     dispatch({ type: 'REMOVE_TASK', payload: taskId });
   }, []);
 

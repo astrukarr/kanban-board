@@ -29,7 +29,7 @@ export const createTask = (data: {
 export const createTaskAPI = async (data: {
   title: string;
   status: TaskStatus;
-}): Promise<{ id: number }> => {
+}): Promise<{ id: string }> => {
   const response = await fetch('https://jsonplaceholder.typicode.com/todos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -44,5 +44,6 @@ export const createTaskAPI = async (data: {
     throw new Error('Failed to create task');
   }
 
-  return response.json();
+  const result = await response.json();
+  return { id: result.id.toString() }; // Convert number to string
 };

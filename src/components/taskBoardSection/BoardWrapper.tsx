@@ -41,7 +41,7 @@ export default function BoardWrapper() {
 
       if (!over) return;
 
-      const taskId = active.id as number;
+      const taskId = active.id as string;
       const newStatus = over.id as TaskStatus;
 
       // Check if task is already in that column
