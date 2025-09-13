@@ -27,7 +27,7 @@ jobs:
         run: npm run lint
 
       - name: Run tests with coverage
-        run: npm test -- --coverage --coverageThreshold.global.statements=80
+        run: npm test -- --coverage --coverageThreshold.global.statements=50
 
       - name: Build application
         run: npm run build

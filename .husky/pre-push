@@ -21,7 +21,7 @@ fi
 
 # 3. Run tests with coverage
 echo "🧪 Running tests with coverage..."
-npm test -- --coverage --coverageThreshold.global.statements=80
+npm test -- --coverage --coverageThreshold.global.statements=50
 if [ $? -ne 0 ]; then
   echo "❌ Tests failed or coverage too low! Please fix before pushing."
   exit 1

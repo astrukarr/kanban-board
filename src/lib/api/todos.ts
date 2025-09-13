@@ -44,7 +44,6 @@ async function fetchTodos() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching todos:', error);
     throw createApiError(error);
   }
 }

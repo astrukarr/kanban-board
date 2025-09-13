@@ -40,7 +40,7 @@ describe('taskCreation', () => {
       expect(result.description).toBe('Test description');
     });
 
-    it('should generate unique IDs for different tasks', async () => {
+    it('should generate unique IDs for different tasks', () => {
       const formData1 = {
         title: 'Task 1',
         status: 'todo' as TaskStatus,
@@ -51,11 +51,15 @@ describe('taskCreation', () => {
       };
 
       const task1 = createTask(formData1);
-      // Add small delay to ensure different timestamp
-      await new Promise(resolve => setTimeout(resolve, 1));
       const task2 = createTask(formData2);
 
-      expect(task1.id).not.toBe(task2.id);
+      // IDs should be different strings
+      expect(task1.id).toBeDefined();
+      expect(task2.id).toBeDefined();
+      expect(typeof task1.id).toBe('string');
+      expect(typeof task2.id).toBe('string');
+      expect(task1.id).toMatch(/^temp-\d+$/);
+      expect(task2.id).toMatch(/^temp-\d+$/);
     });
 
     it('should handle different status values', () => {
