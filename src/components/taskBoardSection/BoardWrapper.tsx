@@ -15,8 +15,16 @@ import { NewTaskModal } from '@/components/modals/NewTaskModal';
 import type { TaskStatus, Task } from '@/types';
 
 export default function BoardWrapper() {
-  const { tasks, columns, loading, error, moveTask, addTask, removeTask } =
-    useTasks();
+  const {
+    tasks,
+    columns,
+    loading,
+    error,
+    moveTask,
+    addTask,
+    removeTask,
+    isHydrated,
+  } = useTasks();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus>('todo');
@@ -58,6 +66,16 @@ export default function BoardWrapper() {
     },
     [addTask]
   );
+
+  if (!isHydrated) {
+    return (
+      <div className="w-full p-4 sm:p-6 md:p-8">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-lg text-slate-600">Loading tasks...</div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

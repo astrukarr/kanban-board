@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useCallback } from 'react';
+import { useReducer, useEffect, useCallback, useState } from 'react';
 import type { Task, TaskStatus } from '@/types';
 import { getTasks, createColumns } from '@/lib/api/todos';
 
@@ -101,6 +101,7 @@ function tasksReducer(state: TasksState, action: TasksAction): TasksState {
 // Custom hook
 export function useTasks() {
   const [state, dispatch] = useReducer(tasksReducer, initialState);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   // Load tasks from API - memoized to prevent unnecessary re-renders
   const loadTasks = useCallback(async () => {
@@ -135,6 +136,8 @@ export function useTasks() {
 
   // Load from localStorage on mount
   useEffect(() => {
+    setIsHydrated(true);
+
     const savedTasks = localStorage.getItem('kanban-tasks');
     if (savedTasks) {
       try {
@@ -158,6 +161,7 @@ export function useTasks() {
 
   return {
     ...state,
+    isHydrated,
     loadTasks,
     moveTask,
     addTask,
