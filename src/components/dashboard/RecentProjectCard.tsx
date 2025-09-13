@@ -20,7 +20,7 @@ function RecentProjectCard({ project }: RecentProjectCardProps) {
   );
 
   return (
-    <Link href={`/project/${project.id}`} className="group block">
+    <Link href={`/project/${project.slug}`} className="group block">
       <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
         {/* Project Icon */}
         <div

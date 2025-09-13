@@ -15,7 +15,7 @@ export const homePageData: HomePageData = {
       height: 48,
     },
     ctaButton: {
-      text: 'Get Started',
+      text: 'View Dashboard',
       href: '/dashboard',
       variant: 'primary',
     },

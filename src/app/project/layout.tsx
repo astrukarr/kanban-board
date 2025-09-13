@@ -5,8 +5,8 @@ import Sidebar from '@/components/menu/desktop/Sidebar';
 const crumbs = [
   { id: 'home', iconSrc: '/static/icons/Home.svg', alt: 'Home' },
   { id: 'dashboard', label: 'Dashboard' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'project', label: 'Project PlanetX' },
+  { id: 'project', label: 'Project' },
+  { id: 'projectX', label: 'Project PlanetX' },
 ];
 
 export default function ProjectLayout({

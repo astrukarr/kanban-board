@@ -1,4 +1,4 @@
-import { getHomePageDataSync } from '@/lib/cms/homePage';
+import { getHomePageDataSync } from '@/lib/data/homePage';
 import Header from '@/components/header/Header';
 import HomeHero from '@/components/homeHero/HomeHero';
 import Features from '@/components/features/Features';

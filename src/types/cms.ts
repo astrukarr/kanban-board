@@ -44,6 +44,7 @@ export interface StatCard {
 export interface RecentProject {
   id: string;
   name: string;
+  slug: string;
   status: 'active' | 'planning' | 'completed';
   tasksCount: number;
   lastActivity: string;
@@ -92,18 +93,5 @@ export interface DashboardData {
   pageDescription: string;
   stats: StatCard[];
   recentProjectsTitle: string;
-  viewAllButton: Button;
   recentProjects: RecentProject[];
-}
-
-export interface ProjectsData {
-  header: Header;
-  projectsPageTitle: string;
-  projectsPageDescription: string;
-  projects: Project[];
-  emptyState: {
-    title: string;
-    description: string;
-    button: Button;
-  };
 }

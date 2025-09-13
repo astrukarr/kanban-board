@@ -70,15 +70,11 @@ export const dashboardData: DashboardData = {
     },
   ],
   recentProjectsTitle: 'Recent Projects',
-  viewAllButton: {
-    text: 'View All Projects',
-    href: '/projects',
-    variant: 'primary',
-  },
   recentProjects: [
     {
       id: 'project-1',
-      name: 'Project Alpha',
+      name: 'Project PlanetX',
+      slug: 'project-planetx',
       status: 'active',
       tasksCount: 15,
       lastActivity: '2 hours ago',
@@ -87,6 +83,7 @@ export const dashboardData: DashboardData = {
     {
       id: 'project-2',
       name: 'Project Beta',
+      slug: 'project-beta',
       status: 'completed',
       tasksCount: 8,
       lastActivity: '1 day ago',
@@ -95,6 +92,7 @@ export const dashboardData: DashboardData = {
     {
       id: 'project-3',
       name: 'Project Gamma',
+      slug: 'project-gamma',
       status: 'planning',
       tasksCount: 12,
       lastActivity: '3 hours ago',
