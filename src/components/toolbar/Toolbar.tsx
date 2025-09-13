@@ -1,5 +1,5 @@
 import type { BreadcrumbsProps } from '../../types';
-import Breadcrumbs from '../breadcrumbs/breadcrumbs';
+import Breadcrumbs from '../breadcrumbs/Breadcrumbs';
 import InviteButton from '../buttons/InviteButton';
 import Image from 'next/image';
 import SearchButton from '../buttons/SearchButton';
