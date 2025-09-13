@@ -28,7 +28,12 @@ describe('todos API', () => {
       const result = await getTasks();
 
       expect(fetch).toHaveBeenCalledWith(
-        'https://jsonplaceholder.typicode.com/todos?_limit=12'
+        'https://jsonplaceholder.typicode.com/todos?_limit=12',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
       expect(result).toHaveLength(6);
       expect(result[0]).toEqual({

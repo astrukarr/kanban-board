@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 
 /* Prevent horizontal scrolling and ensure proper mobile wrapping */
-html, body {
+html,
+body {
   overflow-x: hidden;
   width: 100%;
 }
