@@ -1,8 +1,8 @@
-import { CMSCta } from '@/types/cms';
+import { Cta } from '@/types/cms';
 import Link from 'next/link';
 
 type Props = {
-  cta: CMSCta;
+  cta: Cta;
 };
 
 export default function StartBanner({ cta }: Props) {

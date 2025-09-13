@@ -1,7 +1,7 @@
-import { CMSFooter } from '@/types/cms';
+import { Footer as FooterType } from '@/types/cms';
 
 type Props = {
-  footer: CMSFooter;
+  footer: FooterType;
 };
 export default function Footer({ footer }: Props) {
   return (

@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import Image from 'next/image';
 import { getStatColor } from '@/utils/colorHelpers';
-import type { CMSStatCard } from '@/types/cms';
+import type { StatCard as StatCardType } from '@/types/cms';
 
 type StatCardProps = {
-  stat: CMSStatCard;
+  stat: StatCardType;
 };
 
 function StatCard({ stat }: StatCardProps) {
@@ -18,10 +18,10 @@ function StatCard({ stat }: StatCardProps) {
           className={`w-12 h-12 ${statColor} rounded-xl flex items-center justify-center`}
         >
           <Image
-            src={stat.icon.src}
-            alt={stat.icon.alt}
-            width={stat.icon.width}
-            height={stat.icon.height}
+            src={stat.icon}
+            alt={stat.title}
+            width={24}
+            height={24}
             className="h-6 w-6"
             loading="lazy"
           />

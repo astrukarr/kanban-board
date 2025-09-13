@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getStatusColor, getProjectColor } from '@/utils/colorHelpers';
-import type { CMSProject } from '@/types/cms';
+import type { Project } from '@/types/cms';
 
 type ProjectCardProps = {
-  project: CMSProject;
+  project: Project;
 };
 
 function ProjectCard({ project }: ProjectCardProps) {

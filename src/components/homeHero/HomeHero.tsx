@@ -1,8 +1,8 @@
-import { CMSHero } from '@/types/cms';
+import { Hero } from '@/types/cms';
 import Link from 'next/link';
 
 type Props = {
-  hero: CMSHero;
+  hero: Hero;
 };
 export default function HomeHero({ hero }: Props) {
   return (

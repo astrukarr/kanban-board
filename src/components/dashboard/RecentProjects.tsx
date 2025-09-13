@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import RecentProjectCard from './RecentProjectCard';
-import type { CMSRecentProject, CMSButton } from '@/types/cms';
+import type { RecentProject, Button } from '@/types/cms';
 
 type RecentProjectsProps = {
   title: string;
-  viewAllButton: CMSButton;
-  projects: CMSRecentProject[];
+  viewAllButton: Button;
+  projects: RecentProject[];
 };
 
 export default function RecentProjects({

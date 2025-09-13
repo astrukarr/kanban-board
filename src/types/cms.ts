@@ -1,85 +1,47 @@
-// CMS Data Types
-export interface CMSPageMeta {
-  title: string;
-  description: string;
-  keywords: string[];
-}
-
-export interface CMSImage {
+// Simple Data Types
+export interface Image {
   src: string;
   alt: string;
   width: number;
   height: number;
 }
 
-export interface CMSButton {
+export interface Button {
   text: string;
   href: string;
   variant: 'primary' | 'secondary';
 }
 
-export interface CMSHeader {
-  name: CMSImage;
-  logo: CMSImage;
-  ctaButton: CMSButton;
+export interface Header {
+  name: Image;
+  logo: Image;
+  ctaButton: Button;
 }
 
-export interface CMSHero {
+export interface Hero {
   title: string;
   titleHighlight: string;
   subtitle: string;
-  ctaButtons: CMSButton[];
+  ctaButtons: Button[];
 }
 
-export interface CMSFeature {
-  id: string;
+export interface Feature {
   title: string;
   description: string;
-  icon: CMSImage;
-  color: 'indigo' | 'emerald' | 'blue' | 'purple' | 'orange' | 'teal';
+  icon: string;
 }
 
-export interface CMSFeatures {
-  title: string;
-  items: CMSFeature[];
-}
-
-export interface CMSCta {
-  title: string;
-  subtitle: string;
-  button: CMSButton;
-  backgroundColor: 'indigo' | 'emerald' | 'blue' | 'purple' | 'orange' | 'teal';
-}
-
-export interface CMSFooterLink {
-  text: string;
-  href: string;
-}
-
-export interface CMSFooter {
-  copyright: string;
-  links: CMSFooterLink[];
-}
-
-export interface HomePageData {
-  meta: CMSPageMeta;
-  header: CMSHeader;
-  hero: CMSHero;
-  features: CMSFeatures;
-  cta: CMSCta;
-  footer: CMSFooter;
-}
-
-// Dashboard Types
-export interface CMSStatCard {
+export interface StatCard {
   id: string;
   title: string;
   value: number;
-  icon: CMSImage;
+  change: string;
+  changeType: 'positive' | 'negative' | 'neutral';
+  icon: string;
   color: 'indigo' | 'emerald' | 'blue' | 'purple' | 'orange' | 'teal';
 }
 
-export interface CMSRecentProject {
+export interface RecentProject {
   id: string;
   name: string;
   status: 'active' | 'planning' | 'completed';
@@ -88,38 +50,60 @@ export interface CMSRecentProject {
   color: 'indigo' | 'emerald' | 'blue' | 'purple' | 'orange' | 'teal';
 }
 
-export interface DashboardData {
-  meta: CMSPageMeta;
-  header: CMSHeader;
-  pageTitle: string;
-  pageDescription: string;
-  stats: CMSStatCard[];
-  recentProjectsTitle: string;
-  viewAllButton: CMSButton;
-  recentProjects: CMSRecentProject[];
-  quickActions: CMSButton[];
-}
-
-// Projects Types
-export interface CMSProject {
+export interface Project {
   id: string;
   name: string;
   description: string;
   status: 'active' | 'planning' | 'completed';
-  tasksCount: number;
+  progress: number;
   teamSize: number;
+  deadline: string;
+  tasksCount: number;
   color: 'indigo' | 'emerald' | 'blue' | 'purple' | 'orange' | 'teal';
 }
 
+export interface Cta {
+  title: string;
+  subtitle: string;
+  button: Button;
+  backgroundColor: 'indigo' | 'emerald' | 'blue' | 'purple' | 'orange' | 'teal';
+}
+
+export interface Footer {
+  copyright: string;
+}
+
+export interface HomePageData {
+  header: Header;
+  hero: Hero;
+  features: Feature[];
+  stats: {
+    totalProjects: number;
+    activeTasks: number;
+    teamMembers: number;
+  };
+  cta: Cta;
+  footer: Footer;
+}
+
+export interface DashboardData {
+  header: Header;
+  pageTitle: string;
+  pageDescription: string;
+  stats: StatCard[];
+  recentProjectsTitle: string;
+  viewAllButton: Button;
+  recentProjects: RecentProject[];
+}
+
 export interface ProjectsData {
-  meta: CMSPageMeta;
-  header: CMSHeader;
+  header: Header;
   projectsPageTitle: string;
   projectsPageDescription: string;
-  projects: CMSProject[];
+  projects: Project[];
   emptyState: {
     title: string;
     description: string;
-    button: CMSButton;
+    button: Button;
   };
 }

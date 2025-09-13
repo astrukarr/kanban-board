@@ -1,8 +1,8 @@
 import StatCard from './StatCard';
-import type { CMSStatCard } from '@/types/cms';
+import type { StatCard as StatCardType } from '@/types/cms';
 
 type StatsGridProps = {
-  stats: CMSStatCard[];
+  stats: StatCardType[];
 };
 
 export default function StatsGrid({ stats }: StatsGridProps) {

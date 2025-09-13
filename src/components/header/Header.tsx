@@ -1,9 +1,9 @@
-import { CMSHeader } from '@/types/cms';
+import { Header as HeaderType } from '@/types/cms';
 import Image from 'next/image';
 import Link from 'next/link';
 
 type HeaderProps = {
-  data: CMSHeader;
+  data: HeaderType;
   currentPage?: 'home' | 'dashboard' | 'projects';
 };
 
