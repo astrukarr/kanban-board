@@ -48,3 +48,6 @@ public/workbox-*.js
 test-results/
 playwright-report/
 playwright/.cache/
+
+# Lighthouse CI reports
+.lighthouseci/
