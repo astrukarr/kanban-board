@@ -4,7 +4,11 @@ import EmptyState from '../EmptyState';
 
 // Mock Next.js components
 jest.mock('next/link', () => {
-  return function MockLink({ children, href, ...props }: any) {
+  return function MockLink({
+    children,
+    href,
+    ...props
+  }: React.ComponentProps<'a'> & { href: string }) {
     return (
       <a href={href} {...props}>
         {children}
@@ -14,7 +18,13 @@ jest.mock('next/link', () => {
 });
 
 jest.mock('next/image', () => {
-  return function MockImage({ src, alt, width, height, ...props }: any) {
+  return function MockImage({
+    src,
+    alt,
+    width,
+    height,
+    ...props
+  }: React.ComponentProps<'img'>) {
     return <img src={src} alt={alt} width={width} height={height} {...props} />;
   };
 });

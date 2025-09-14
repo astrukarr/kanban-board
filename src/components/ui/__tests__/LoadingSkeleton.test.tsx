@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import LoadingSkeleton from '../LoadingSkeleton';
 
 describe('LoadingSkeleton Component', () => {
@@ -71,7 +71,7 @@ describe('LoadingSkeleton Component', () => {
 
     it('should render default variant for unknown type', () => {
       const { container } = render(
-        <LoadingSkeleton variant={'unknown' as any} />
+        <LoadingSkeleton variant={'unknown' as never} />
       );
 
       const skeleton = container.firstChild as HTMLElement;

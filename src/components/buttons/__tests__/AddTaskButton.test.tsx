@@ -5,7 +5,13 @@ import type { TaskStatus } from '@/types';
 
 // Mock Next.js Image component
 jest.mock('next/image', () => {
-  return function MockImage({ src, alt, width, height, ...props }: any) {
+  return function MockImage({
+    src,
+    alt,
+    width,
+    height,
+    ...props
+  }: React.ComponentProps<'img'>) {
     return <img src={src} alt={alt} width={width} height={height} {...props} />;
   };
 });
