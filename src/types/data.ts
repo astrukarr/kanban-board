@@ -15,7 +15,6 @@ export interface Button {
 export interface Header {
   name: Image;
   logo: Image;
-  ctaButton: Button;
 }
 
 export interface Hero {

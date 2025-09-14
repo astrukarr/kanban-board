@@ -1,5 +1,5 @@
 import RecentProjectCard from './RecentProjectCard';
-import type { RecentProject } from '@/types/cms';
+import type { RecentProject } from '@/types/data';
 
 type RecentProjectsProps = {
   title: string;

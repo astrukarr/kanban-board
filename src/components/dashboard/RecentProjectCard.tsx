@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getStatusColor, getProjectColor } from '@/utils/colorHelpers';
-import type { RecentProject } from '@/types/cms';
+import type { RecentProject } from '@/types/data';
 
 type RecentProjectCardProps = {
   project: RecentProject;

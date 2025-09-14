@@ -31,7 +31,9 @@ function LoginForm() {
 
     // Redirect to returnUrl or default to settings
     const returnUrl = searchParams.get('returnUrl');
-    const redirectPath = returnUrl ? decodeURIComponent(returnUrl) : '/settings';
+    const redirectPath = returnUrl
+      ? decodeURIComponent(returnUrl)
+      : '/settings';
     router.push(redirectPath);
 
     setIsLoading(false);

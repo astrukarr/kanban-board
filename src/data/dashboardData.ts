@@ -1,4 +1,4 @@
-import type { DashboardData } from '@/types/cms';
+import type { DashboardData } from '@/types/data';
 
 export const dashboardData: DashboardData = {
   header: {
@@ -13,11 +13,6 @@ export const dashboardData: DashboardData = {
       alt: 'Logo',
       width: 48,
       height: 48,
-    },
-    ctaButton: {
-      text: 'Get Started',
-      href: '/dashboard',
-      variant: 'primary',
     },
   },
   pageTitle: 'Dashboard',

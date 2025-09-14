@@ -1,4 +1,4 @@
-import { Feature } from '@/types/cms';
+import { Feature } from '@/types/data';
 import Image from 'next/image';
 
 type Props = {

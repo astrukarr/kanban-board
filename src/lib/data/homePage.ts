@@ -1,5 +1,5 @@
 import { homePageData } from '@/data/homePageData';
-import type { HomePageData } from '@/types/cms';
+import type { HomePageData } from '@/types/data';
 
 export function getHomePageData(): HomePageData {
   return homePageData;

@@ -1,4 +1,4 @@
-import type { HomePageData } from '@/types/cms';
+import type { HomePageData } from '@/types/data';
 
 export const homePageData: HomePageData = {
   header: {
@@ -14,11 +14,6 @@ export const homePageData: HomePageData = {
       width: 48,
       height: 48,
     },
-    ctaButton: {
-      text: 'View Dashboard',
-      href: '/dashboard',
-      variant: 'primary',
-    },
   },
   hero: {
     title: 'Welcome to Kanban Board',
@@ -26,7 +21,7 @@ export const homePageData: HomePageData = {
     subtitle: 'Organize your projects with ease',
     ctaButtons: [
       {
-        text: 'Get Started',
+        text: 'View Dashboard',
         href: '/dashboard',
         variant: 'primary',
       },

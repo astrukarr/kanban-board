@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import OfflineBanner from '@/components/OfflineBanner';
+import OfflineBanner from '@/components/offlineBanner/OfflineBanner';
 
 export const metadata: Metadata = {
   title: 'Kanban Board',

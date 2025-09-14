@@ -1,5 +1,5 @@
 import StatCard from './StatCard';
-import type { StatCard as StatCardType } from '@/types/cms';
+import type { StatCard as StatCardType } from '@/types/data';
 
 type StatsGridProps = {
   stats: StatCardType[];

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Image from 'next/image';
 import { getStatColor } from '@/utils/colorHelpers';
-import type { StatCard as StatCardType } from '@/types/cms';
+import type { StatCard as StatCardType } from '@/types/data';
 
 type StatCardProps = {
   stat: StatCardType;

@@ -1,7 +1,9 @@
-import Header from '@/components/header/Header';
 import { getDashboardDataSync } from '@/lib/data/dashboard';
 import dynamic from 'next/dynamic';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import Toolbar from '@/components/toolbar/Toolbar';
+import MobileHeader from '@/components/menu/mobile/MobileHeader';
+import Sidebar from '@/components/menu/desktop/Sidebar';
 
 // Dynamically import dashboard components to reduce initial bundle size
 const StatsGrid = dynamic(() => import('@/components/dashboard/StatsGrid'), {
@@ -35,27 +37,37 @@ const RecentProjects = dynamic(
 export default function DashboardPage() {
   const data = getDashboardDataSync();
 
+  const crumbs = [
+    { id: 'home', iconSrc: '/static/icons/Home.svg', alt: 'Home' },
+    { id: 'dashboard', label: 'Dashboard' },
+  ];
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header data={data.header} currentPage="dashboard" />
+    <div className="min-h-screen flex flex-col md:flex-row">
+      <MobileHeader />
+      <Sidebar />
+      <div className="flex-1 flex flex-col md:ml-20">
+        <Toolbar breadcrumbs={crumbs} />
+        <main className="flex-1 overflow-y-auto">
+          <div className="px-4 py-8 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="mb-8">
+                <h1 className="text-3xl font-bold text-slate-800 mb-2">
+                  {data.pageTitle}
+                </h1>
+                <p className="text-slate-600">{data.pageDescription}</p>
+              </div>
 
-      <main className="px-4 py-8 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-800 mb-2">
-              {data.pageTitle}
-            </h1>
-            <p className="text-slate-600">{data.pageDescription}</p>
+              <StatsGrid stats={data.stats} />
+
+              <RecentProjects
+                title={data.recentProjectsTitle}
+                projects={data.recentProjects}
+              />
+            </div>
           </div>
-
-          <StatsGrid stats={data.stats} />
-
-          <RecentProjects
-            title={data.recentProjectsTitle}
-            projects={data.recentProjects}
-          />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

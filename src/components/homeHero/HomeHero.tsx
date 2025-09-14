@@ -1,4 +1,4 @@
-import { Hero } from '@/types/cms';
+import { Hero } from '@/types/data';
 import Link from 'next/link';
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
 };
 export default function HomeHero({ hero }: Props) {
   return (
-    <div className="px-4 py-16 lg:px-8 lg:py-24">
+    <div className="px-4 py-16 lg:px-8">
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl lg:text-6xl font-extrabold text-slate-800 mb-6">
           {hero.title.replace(hero.titleHighlight, '')}

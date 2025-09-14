@@ -1,4 +1,4 @@
-import { Header as HeaderType } from '@/types/cms';
+import { Header as HeaderType } from '@/types/data';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -34,15 +34,6 @@ export default function Header({ data, currentPage = 'home' }: HeaderProps) {
             loading="eager"
           />
         </Link>
-
-        {currentPage === 'home' && (
-          <Link
-            href={data.ctaButton.href}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
-          >
-            {data.ctaButton.text}
-          </Link>
-        )}
       </div>
     </div>
   );
