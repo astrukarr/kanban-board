@@ -29,8 +29,10 @@ function LoginForm() {
     const token = generateDummyToken();
     setToken(token);
 
-    // Redirect to settings page
-    router.push('/settings');
+    // Redirect to returnUrl or default to settings
+    const returnUrl = searchParams.get('returnUrl');
+    const redirectPath = returnUrl ? decodeURIComponent(returnUrl) : '/settings';
+    router.push(redirectPath);
 
     setIsLoading(false);
   };
