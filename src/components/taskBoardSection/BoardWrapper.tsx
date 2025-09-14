@@ -1,22 +1,14 @@
 'use client';
 
-import {
-  DndContext,
-  DragEndEvent,
-  DragOverlay,
-  DragStartEvent,
-  TouchSensor,
-  MouseSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import React, { useState, useCallback, Suspense, lazy } from 'react';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
+import React, { Suspense, lazy } from 'react';
 import { COLUMN_CONFIG } from '@/constants';
 import { useTasks } from '@/hooks/useTasks';
+import { useDragAndDrop } from '@/hooks/useDragAndDrop';
+import { useTaskModal } from '@/hooks/useTaskModal';
 import TaskColumn from './TaskColumn';
 import TaskCard from '../TaskCard/Card';
 import Loading from '@/components/ui/Loading';
-import type { TaskStatus, Task } from '@/types';
 
 // Lazy load heavy modal component
 const NewTaskModal = lazy(() =>
@@ -36,63 +28,22 @@ export default function BoardWrapper() {
     // removeTask, // TODO: Implement task removal functionality
     isHydrated,
   } = useTasks();
-  const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<TaskStatus>('todo');
 
-  // Configure sensors for better touch support
-  const mouseSensor = useSensor(MouseSensor, {
-    activationConstraint: {
-      distance: 8, // Require 8px movement before drag starts
-    },
-  });
+  // Use drag and drop hook
+  const { activeTask, sensors, handleDragStart, handleDragEnd } =
+    useDragAndDrop({
+      tasks,
+      moveTask,
+    });
 
-  const touchSensor = useSensor(TouchSensor, {
-    activationConstraint: {
-      delay: 100, // 100ms delay before drag starts
-      tolerance: 3, // 3px tolerance for touch movement
-    },
-  });
-
-  const sensors = useSensors(mouseSensor, touchSensor);
-
-  // Memoize drag handlers to prevent unnecessary re-renders
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    const { active } = event;
-    setActiveTask(active.data.current as Task);
-  }, []);
-
-  const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event;
-
-      if (!over) return;
-
-      const taskId = active.id as string;
-      const newStatus = over.id as TaskStatus;
-
-      // Check if task is already in that column
-      const currentTask = tasks.find(t => t.id === taskId);
-      if (currentTask && currentTask.status !== newStatus) {
-        moveTask(taskId, newStatus);
-      }
-
-      setActiveTask(null);
-    },
-    [tasks, moveTask]
-  );
-
-  const handleAddTask = useCallback((status: TaskStatus) => {
-    setSelectedStatus(status);
-    setIsModalOpen(true);
-  }, []);
-
-  const handleTaskCreated = useCallback(
-    (task: Task) => {
-      addTask(task);
-    },
-    [addTask]
-  );
+  // Use task modal hook
+  const {
+    isModalOpen,
+    selectedStatus,
+    handleAddTask,
+    handleTaskCreated,
+    handleCloseModal,
+  } = useTaskModal({ addTask });
 
   if (!isHydrated) {
     return (
@@ -120,15 +71,14 @@ export default function BoardWrapper() {
 
   return (
     <div className="w-full p-4 sm:p-6 md:p-8">
-      {/* Add Task Button */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <button
           onClick={() => handleAddTask('todo')}
           className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer"
         >
           + Add New Task
         </button>
-      </div>
+      </div> */}
 
       <DndContext
         sensors={sensors}
@@ -158,11 +108,10 @@ export default function BoardWrapper() {
         </DragOverlay>
       </DndContext>
 
-      {/* Modal */}
       <Suspense fallback={<Loading message="Loading modal..." />}>
         <NewTaskModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleCloseModal}
           onTaskCreated={handleTaskCreated}
           defaultStatus={selectedStatus}
         />

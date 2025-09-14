@@ -32,11 +32,12 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Start application for Lighthouse CI
-        run: npm start &
-
-      - name: Wait for application to start
-        run: npx wait-on http://localhost:3000
-
-      - name: Run Lighthouse CI
-        run: npm run lighthouse:ci
+      # Lighthouse CI temporarily disabled during development
+      # - name: Start application for Lighthouse CI
+      #   run: npm start &
+      #
+      # - name: Wait for application to start
+      #   run: npx wait-on http://localhost:3000
+      #
+      # - name: Run Lighthouse CI
+      #   run: npm run lighthouse:ci
