@@ -5,6 +5,10 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
+  TouchSensor,
+  MouseSensor,
+  useSensor,
+  useSensors,
 } from '@dnd-kit/core';
 import React, { useState, useCallback, Suspense, lazy } from 'react';
 import { COLUMN_CONFIG } from '@/constants';
@@ -35,6 +39,22 @@ export default function BoardWrapper() {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus>('todo');
+
+  // Configure sensors for better touch support
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 8, // Require 8px movement before drag starts
+    },
+  });
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 100, // 100ms delay before drag starts
+      tolerance: 3, // 3px tolerance for touch movement
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
 
   // Memoize drag handlers to prevent unnecessary re-renders
   const handleDragStart = useCallback((event: DragStartEvent) => {
@@ -110,7 +130,11 @@ export default function BoardWrapper() {
         </button>
       </div>
 
-      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {COLUMN_CONFIG.map(({ status, title }) => (
             <TaskColumn
