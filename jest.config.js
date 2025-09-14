@@ -26,6 +26,11 @@ const customJestConfig = {
     '!src/**/*.d.ts',
     '!src/**/*.stories.{js,jsx,ts,tsx}',
   ],
+  // Mock jose library for tests
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^jose$': '<rootDir>/src/__mocks__/jose.js',
+  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

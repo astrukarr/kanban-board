@@ -1,10 +1,7 @@
 import type { TaskStatus, Task } from '@/types';
 import { ENV_CONFIG, TASK_CONFIG } from '@/constants';
-import {
-  createApiError,
-  safeLocalStorageGet,
-  safeLocalStorageRemove,
-} from '@/utils/errorHelpers';
+import { createApiError, safeLocalStorageGet } from '@/utils/errorHelpers';
+import { logout } from '@/utils/auth';
 
 // Helper function to get auth token
 function getAuthToken(): string | null {
@@ -32,10 +29,8 @@ async function fetchTodos() {
 
     if (!response.ok) {
       if (response.status === 401) {
-        // Token expired - redirect to login
-        safeLocalStorageRemove('token');
-        window.location.href =
-          '/login?message=Session expired. Please sign in again.';
+        // Token expired or invalid - logout user
+        logout();
         throw new Error('Unauthorized');
       }
       throw new Error(`HTTP error! status: ${response.status}`);

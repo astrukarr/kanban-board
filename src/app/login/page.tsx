@@ -26,7 +26,7 @@ function LoginForm() {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Generate dummy token
-    const token = generateDummyToken();
+    const token = await generateDummyToken();
     setToken(token);
 
     // Redirect to returnUrl or default to settings

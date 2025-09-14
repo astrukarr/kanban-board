@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Loading from '@/components/ui/Loading';
+import { isTokenValid, refreshTokenIfNeeded } from '@/utils/auth';
 
 type RequireAuthProps = {
   children: React.ReactNode;
@@ -14,20 +15,23 @@ export default function RequireAuth({ children }: RequireAuthProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Check if token exists in localStorage
-    const token = localStorage.getItem('token');
+    const checkAuth = async () => {
+      // Check if token exists and is valid
+      if (!(await isTokenValid())) {
+        // No valid token - redirect to login page with message and return URL
+        const returnUrl = encodeURIComponent(pathname);
+        router.replace(
+          `/login?message=Authentication required&returnUrl=${returnUrl}`
+        );
+        setIsAuthenticated(false);
+      } else {
+        // Token is valid - check if refresh is needed
+        await refreshTokenIfNeeded();
+        setIsAuthenticated(true);
+      }
+    };
 
-    if (!token) {
-      // No token - redirect to login page with message and return URL
-      const returnUrl = encodeURIComponent(pathname);
-      router.replace(
-        `/login?message=Authentication required&returnUrl=${returnUrl}`
-      );
-      setIsAuthenticated(false);
-    } else {
-      // Token exists - allow access
-      setIsAuthenticated(true);
-    }
+    checkAuth();
   }, [router, pathname]);
 
   // Show loading while checking authentication
