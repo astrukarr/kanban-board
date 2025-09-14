@@ -1,6 +1,8 @@
 import dynamic from 'next/dynamic';
 import SectionWrapper from '@/components/projectInfoSection/SectionWrapper';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import AppLayout from '@/components/layout/AppLayout';
+import { PROJECT_BREADCRUMBS } from '@/constants/breadcrumbs';
 
 // Dynamically import BoardWrapper to reduce initial bundle size
 const BoardWrapper = dynamic(
@@ -21,12 +23,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   await params;
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Project Info Section */}
-      <SectionWrapper />
+    <AppLayout breadcrumbs={PROJECT_BREADCRUMBS}>
+      <div className="min-h-screen bg-slate-50">
+        {/* Project Info Section */}
+        <SectionWrapper />
 
-      {/* Kanban Board */}
-      <BoardWrapper />
-    </div>
+        {/* Kanban Board */}
+        <BoardWrapper />
+      </div>
+    </AppLayout>
   );
 }
