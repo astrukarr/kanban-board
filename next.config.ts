@@ -14,54 +14,31 @@ const nextConfig: NextConfig = {
     memoryBasedWorkersCount: true,
   },
 
-  // Development-specific optimizations
-  ...(process.env.NODE_ENV === 'development' && {
-    // Faster compilation
-    swcMinify: false, // Disable minification in dev for speed
-    // Reduce bundle analysis overhead
-    webpack: (config, { dev }) => {
-      if (dev) {
-        // Faster builds
-        config.watchOptions = {
-          poll: 1000,
-          aggregateTimeout: 300,
-        };
+  // Webpack configuration for both dev and production
+  webpack: (config, { dev }) => {
+    // Deduplicate yjs to avoid multiple module instances across chunks
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve?.alias || {}),
+      yjs: require.resolve('yjs'),
+    };
 
-        // Deduplicate yjs to avoid multiple module instances across chunks
-        config.resolve = config.resolve || {};
-        config.resolve.alias = {
-          ...(config.resolve?.alias || {}),
-          yjs: require.resolve('yjs'),
-        };
-
-        // Reduce memory usage
-        config.optimization = {
-          ...config.optimization,
-          splitChunks: false, // Disable code splitting in dev for speed
-        };
-      } else {
-        // Production webpack config
-        config.resolve = config.resolve || {};
-        config.resolve.alias = {
-          ...(config.resolve?.alias || {}),
-          yjs: require.resolve('yjs'),
-        };
-      }
-      return config;
-    },
-  }),
-
-  // Production webpack config (fallback)
-  ...(process.env.NODE_ENV !== 'development' && {
-    webpack: config => {
-      config.resolve = config.resolve || {};
-      config.resolve.alias = {
-        ...(config.resolve?.alias || {}),
-        yjs: require.resolve('yjs'),
+    if (dev) {
+      // Faster builds in development
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
       };
-      return config;
-    },
-  }),
+
+      // Reduce memory usage
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: false, // Disable code splitting in dev for speed
+      };
+    }
+
+    return config;
+  },
 };
 
 const pwaConfig = withPWA({

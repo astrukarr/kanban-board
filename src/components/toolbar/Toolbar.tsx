@@ -4,20 +4,17 @@ import InviteButton from '../buttons/InviteButton';
 import Image from 'next/image';
 import SearchButton from '../buttons/SearchButton';
 import BackButton from '../buttons/BackButton';
+import { AVATAR_PATHS } from '@/constants';
 
 type ToolbarProps = {
   breadcrumbs: BreadcrumbsProps['items'];
 };
 
-const AVATARS: string[] = [
-  '/static/images/Avatar1.png',
-  '/static/images/Avatar2.png',
-  '/static/images/Avatar3.png',
-  '/static/images/Avatar4.png',
-  '/static/images/Avatar5.png',
-  '/static/images/Avatar6.png',
-  '/static/images/Avatar7.png',
-];
+// Generate avatar paths using the same logic as AvatarGroup
+const AVATARS: string[] = Array.from(
+  { length: AVATAR_PATHS.maxCount },
+  (_, i) => `${AVATAR_PATHS.basePath}${i + 1}.${AVATAR_PATHS.ext}`
+);
 
 export default function Toolbar({ breadcrumbs }: ToolbarProps) {
   return (

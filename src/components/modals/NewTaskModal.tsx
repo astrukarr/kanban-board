@@ -86,7 +86,6 @@ export const NewTaskModal = ({
         </div>
       </div>
 
-      {/* Toast notification */}
       {toast && (
         <Toast
           message={toast.message}

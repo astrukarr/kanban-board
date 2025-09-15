@@ -10,7 +10,6 @@ type LoadingSkeletonProps = {
 };
 
 export default function LoadingSkeleton({ variant }: LoadingSkeletonProps) {
-  // Minimalni skeletoni za smanjenje bundle sizea
   switch (variant) {
     case 'statCard':
       return (

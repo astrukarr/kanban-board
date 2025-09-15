@@ -8,7 +8,6 @@ export default function Item({ id, src, alt }: SidebarItemProps) {
   const router = useRouter();
 
   const handleClick = () => {
-    // Navigate based on item ID
     switch (id) {
       case 'home':
         router.push('/');
@@ -20,7 +19,6 @@ export default function Item({ id, src, alt }: SidebarItemProps) {
         router.push('/settings');
         break;
       default:
-        // For other items, you can add more routes later
         break;
     }
   };

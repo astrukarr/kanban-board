@@ -5,7 +5,6 @@ import AppLayout from '@/components/layout/AppLayout';
 import { PROJECT_BREADCRUMBS } from '@/constants/breadcrumbs';
 import RealtimeRoom from '@/components/realtime/RealtimeRoom';
 
-// Dynamically import BoardWrapper to reduce initial bundle size
 const BoardWrapper = dynamic(
   () => import('@/components/taskBoardSection/BoardWrapper'),
   {
