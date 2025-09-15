@@ -16,9 +16,9 @@
     "format:check": "prettier --check .",
     "analyze": "ANALYZE=true npm run build",
     "bundle-analysis": "node scripts/bundle-analysis.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "jest --config jest.config.mjs",
+    "test:watch": "jest --watch --config jest.config.mjs",
+    "test:coverage": "jest --coverage --config jest.config.mjs",
     "lighthouse:ci": "lhci autorun",
     "prepare": "husky"
   },
