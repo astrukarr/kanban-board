@@ -63,7 +63,7 @@ function modToStatus(id: number): TaskStatus {
   return 'completed'; // Success/green (Completed)
 }
 
-// Async funkcija za dohvaćanje i mapiranje podataka
+// Async function for fetching and mapping data
 export async function getTasks(): Promise<Task[]> {
   const data = await fetchTodos();
   return data.map(t => ({
@@ -82,7 +82,7 @@ export function createColumns(tasks: Task[]) {
   };
 }
 
-// Export za kompatibilnost s postojećim kodom (trenutno prazan)
+// Export for compatibility with existing code (currently empty)
 export const tasks: Task[] = [];
 export const columns = {
   todo: [],

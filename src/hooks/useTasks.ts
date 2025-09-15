@@ -29,7 +29,7 @@ export type TasksAction =
   | { type: 'ADD_TASK'; payload: Task }
   | { type: 'REMOVE_TASK'; payload: string };
 
-// Početni state
+// Initial state
 const initialState: TasksState = {
   tasks: [],
   columns: {
