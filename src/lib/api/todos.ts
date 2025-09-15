@@ -12,7 +12,8 @@ function getAuthToken(): string | null {
 }
 
 // Fetch function with authentication
-async function fetchTodos() {
+type RemoteTodo = { id: number; title: string };
+async function fetchTodos(): Promise<RemoteTodo[]> {
   try {
     const token = getAuthToken();
     const headers: HeadersInit = {
@@ -36,8 +37,20 @@ async function fetchTodos() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
-    return data;
+    // Guard JSON parsing in case of empty or invalid body
+    const text = await response.text();
+    if (!text) return [] as RemoteTodo[];
+    try {
+      const raw = JSON.parse(text) as unknown[];
+      const isRemoteTodo = (v: unknown): v is RemoteTodo => {
+        if (!v || typeof v !== 'object') return false;
+        const r = v as Record<string, unknown>;
+        return typeof r.id === 'number' && typeof r.title === 'string';
+      };
+      return raw.filter(isRemoteTodo);
+    } catch {
+      throw new Error('Invalid JSON response');
+    }
   } catch (error) {
     throw createApiError(error);
   }
@@ -53,7 +66,7 @@ function modToStatus(id: number): TaskStatus {
 // Async funkcija za dohvaćanje i mapiranje podataka
 export async function getTasks(): Promise<Task[]> {
   const data = await fetchTodos();
-  return data.map((t: { id: number; title: string }) => ({
+  return data.map(t => ({
     id: t.id.toString(), // Convert number to string
     title: t.title,
     status: modToStatus(t.id),

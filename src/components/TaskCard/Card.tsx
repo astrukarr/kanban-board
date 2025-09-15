@@ -3,16 +3,25 @@
 import React, { useMemo } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { TaskCardProps } from '@/types';
+import { motion, AnimatePresence } from 'framer-motion';
 import { STATUS_LABELS } from '@/constants';
 import { calculateCounts, calculateProgress, getColorConfig } from '@/utils';
 import ProgressBar from './ProgressBar';
 import AvatarGroup from './AvatarGroup';
 import Image from 'next/image';
 
-function TaskCard({ id, title, status }: TaskCardProps) {
+type EnhancedTaskCardProps = TaskCardProps & { remote?: boolean };
+
+function TaskCard({ id, title, status, remote }: EnhancedTaskCardProps) {
   // Memoize expensive calculations to prevent unnecessary recalculations
   const { comments, checks } = useMemo(() => calculateCounts(id), [id]);
-  const progress = useMemo(() => calculateProgress(status, id), [status, id]);
+  const safeComments = Number.isFinite(comments) ? comments : 0;
+  const safeChecks = Number.isFinite(checks) ? checks : 0;
+  const progressRaw = useMemo(
+    () => calculateProgress(status, id),
+    [status, id]
+  );
+  const progress = Number.isFinite(progressRaw) ? progressRaw : 0;
   const colorConfig = useMemo(() => getColorConfig(status), [status]);
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -34,6 +43,7 @@ function TaskCard({ id, title, status }: TaskCardProps) {
   return (
     <div
       ref={setNodeRef}
+      data-task-id={id}
       style={style}
       {...listeners}
       {...attributes}
@@ -41,6 +51,19 @@ function TaskCard({ id, title, status }: TaskCardProps) {
         isDragging ? 'opacity-50' : ''
       }`}
     >
+      <AnimatePresence>
+        {remote && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.25 }}
+            className="mb-2 inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold text-indigo-700 border border-indigo-200"
+          >
+            Updated remotely
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div
         className={`inline-flex items-center justify-center gap-1 rounded-full px-2 py-1 ${colorConfig.chipBg}`}
       >
@@ -70,7 +93,7 @@ function TaskCard({ id, title, status }: TaskCardProps) {
               loading="eager"
               priority={false}
             />
-            <span className="text-sm font-semibold">{comments}</span>
+            <span className="text-sm font-semibold">{safeComments}</span>
           </div>
           <div className="flex items-center gap-1 text-slate-800">
             <Image
@@ -83,7 +106,7 @@ function TaskCard({ id, title, status }: TaskCardProps) {
               priority={false}
             />
 
-            <span className="text-sm font-semibold">{checks}</span>
+            <span className="text-sm font-semibold">{safeChecks}</span>
           </div>
         </div>
       </div>

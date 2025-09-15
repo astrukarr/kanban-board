@@ -4,10 +4,9 @@ import Link from 'next/link';
 
 type HeaderProps = {
   data: HeaderType;
-  currentPage?: 'home' | 'dashboard' | 'projects';
 };
 
-export default function Header({ data, currentPage = 'home' }: HeaderProps) {
+export default function Header({ data }: HeaderProps) {
   return (
     <div className="px-4 py-4 lg:px-8">
       <div className="flex items-center justify-between">

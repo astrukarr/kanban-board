@@ -277,7 +277,7 @@ describe('useOnlineStatus Hook', () => {
       const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
       const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
-      const { result } = renderHook(() => useOnlineStatus());
+      renderHook(() => useOnlineStatus());
 
       // Go offline to change wasOffline
       act(() => {

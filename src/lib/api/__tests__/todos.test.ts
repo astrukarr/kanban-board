@@ -23,6 +23,7 @@ describe('todos API', () => {
       (fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: jest.fn().mockResolvedValueOnce(mockApiResponse),
+        text: jest.fn().mockResolvedValueOnce(JSON.stringify(mockApiResponse)),
       });
 
       const result = await getTasks();
@@ -56,6 +57,7 @@ describe('todos API', () => {
       (fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: jest.fn().mockResolvedValueOnce(mockApiResponse),
+        text: jest.fn().mockResolvedValueOnce(JSON.stringify(mockApiResponse)),
       });
 
       const result = await getTasks();
@@ -83,6 +85,7 @@ describe('todos API', () => {
       (fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 500,
+        text: jest.fn().mockResolvedValueOnce('Internal Server Error'),
       });
 
       try {
@@ -97,6 +100,7 @@ describe('todos API', () => {
       (fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: jest.fn().mockResolvedValueOnce([]),
+        text: jest.fn().mockResolvedValueOnce('[]'),
       });
 
       const result = await getTasks();
@@ -113,6 +117,7 @@ describe('todos API', () => {
       (fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: jest.fn().mockResolvedValueOnce(mockApiResponse),
+        text: jest.fn().mockResolvedValueOnce(JSON.stringify(mockApiResponse)),
       });
 
       const result = await getTasks();

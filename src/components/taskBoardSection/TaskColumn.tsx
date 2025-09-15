@@ -5,9 +5,15 @@ import { useDroppable } from '@dnd-kit/core';
 import { TaskColumnProps } from '@/types';
 import { getHeaderStyle } from '@/utils';
 import TaskCard from '../TaskCard/Card';
+import { useParams } from 'next/navigation';
+import { useRealtimeTasks } from '@/hooks/useRealtimeTasks';
 import AddTaskButton from '../buttons/AddTaskButton';
 
 function TaskColumn({ title, status, items, onAddTask }: TaskColumnProps) {
+  const params = useParams<{ slug?: string }>();
+  const roomKey = params?.slug ? `kanban-${params.slug}` : '__no_room__';
+  const roomActive = roomKey !== '__no_room__';
+  const { isRecentlyRemote } = useRealtimeTasks(roomKey);
   // Memoize header style calculation to prevent unnecessary recalculations
   const headerStyle = useMemo(() => getHeaderStyle(status), [status]);
 
@@ -18,6 +24,7 @@ function TaskColumn({ title, status, items, onAddTask }: TaskColumnProps) {
   return (
     <section
       ref={setNodeRef}
+      data-column-id={status}
       className={`box-border flex flex-col rounded-[32px] border border-slate-200 bg-slate-50 p-4 transition-colors min-h-[400px] w-full ${
         isOver ? 'bg-slate-100 border-slate-300' : ''
       }`}
@@ -44,6 +51,7 @@ function TaskColumn({ title, status, items, onAddTask }: TaskColumnProps) {
             id={task.id}
             title={task.title}
             status={task.status}
+            remote={roomActive ? isRecentlyRemote(task.id) : false}
           />
         ))}
       </div>
