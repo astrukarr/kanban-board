@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": ["apps/kanban/.next/**", "!.next/cache/**", "dist/**", "packages/shared-types/dist/**"]
     },
     "dev": {
       "cache": false,
