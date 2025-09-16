@@ -1,67 +1,58 @@
-## Realtime testiranje (Yjs + y-websocket)
+# Realtime Testing (Yjs + y-websocket)
 
-Ovaj dokument pokriva kako pokrenuti i testirati realtime sinkronizaciju na kanban ploči u dva taba bez refresha, te kako riješiti tipične probleme.
+This document covers how to run and test realtime synchronization on the kanban board across two tabs without refresh.
 
-### 1) Pokretanje aplikacije
+## Quick Start
 
-- Pokreni dev server:
-  - `npm run dev`
-- Otvori projekt rutu u dva taba preglednika, npr.:
-  - `http://localhost:3000/project/project-planetx` (ili port koji ispiše dev server, npr. 3003)
+1. **Start the app:**
 
-U vrhu ploče vidjet ćeš status: “Realtime connected · tasks: X”.
+   ```bash
+   npm run dev
+   ```
 
-### 2) Što testirati
+2. **Open project in two tabs:**
 
-- “+ Mock task (test)” gumb:
-  - Klik u prvom tabu → nova kartica se mora pojaviti i u drugom tabu bez osvježavanja.
-- Drag & drop između kolona:
-  - Povuci karticu u prvom tabu → promjena se pojavljuje u drugom tabu odmah.
-- Remote badge (ako je uključen u `TaskCard`):
-  - Na kartici primatelju kratko se pojavi oznaka “Updated remotely”.
+   ```
+   http://localhost:3000/project/test
+   ```
 
-### 3) Endpoint za websocket
+3. **Enable realtime mode:**
+   Add `?rt=1` to both URLs:
+   ```
+   http://localhost:3000/project/test?rt=1
+   ```
 
-U `src/app/project/[slug]/page.tsx` `RealtimeRoom` prima `endpoint` prop:
+You should see "Realtime connected · tasks: X" status at the top of the board.
 
-- Development (stabilno, lokalno): `ws://localhost:1234`
-- Alternativa (javna demo instanca): `wss://demos.yjs.dev`
+## Testing Scenarios
 
-Ako želiš prebaciti endpoint, promijeni vrijednost `endpoint` u `RealtimeRoom` pozivu i refreshaš stranicu.
+- **"+ Mock task (test)" button:** Click in first tab → card appears in second tab instantly
+- **Drag & drop:** Move card between columns in first tab → change appears in second tab
+- **Remote updates:** Cards show "Updated remotely" badge when changed from another tab
 
-### 4) Lokalni websocket server (opcionalno, preporučeno za stabilnost)
+## WebSocket Endpoints
 
-Ako demo server puca ili spam-a konzolu, koristi lokalni `y-websocket` server.
+- **Public demo:** `wss://demos.yjs.dev` (default)
+- **Local server:** `ws://localhost:1234` (more stable)
 
-Opcije (ovisno o verziji paketa):
+## Local WebSocket Server
 
-- `npx y-websocket --port 1234` (novije verzije)
-- ili `npx y-websocket-server --port 1234` (starije verzije)
+For more stable testing, run a local server:
 
-Ako nijedna ne radi, instaliraj globalno pa pokreni:
+```bash
+npx y-websocket --port 1234
+```
 
-- `npm i -g y-websocket`
-- `y-websocket --port 1234`
+Then update the endpoint in `src/app/project/[slug]/page.tsx` and refresh both tabs.
 
-Zatim postavi `endpoint="ws://localhost:1234"` i refreshaj oba taba.
+## Troubleshooting
 
-Napomena: Na nekim sustavima CLI naziv ovisi o instaliranoj verziji. Ako dobiješ poruku da je naziv pogrešan, koristi predloženi naziv iz poruke.
+- **"React hooks order changed"** → Hard refresh both tabs
+- **"Yjs was already imported"** → Hard refresh (webpack alias should prevent this)
+- **"WebSocket connection failed"** → Switch to local server (`ws://localhost:1234`)
+- **No "Realtime connected" status** → Check `RealtimeRoom` is mounted and endpoint is correct
+- **Drag & drop not syncing** → Ensure both tabs use same project slug
 
-### 5) Uobičajeni problemi i rješenja
+## Expected Behavior
 
-- “React has detected a change in the order of Hooks…” ili “Rendered more hooks…” u `BoardWrapper`:
-  - Fiksirano pozivanjem svih hookova bezuvjetno i pomicanjem izvedenih vrijednosti iznad ranih `return`-ova.
-  - Ako se pojavi nakon izmjena, napravi hard refresh u oba taba.
-- “Yjs was already imported. This breaks constructor checks…”
-  - U `next.config.ts` je dodan webpack alias koji deduplikira `yjs` paket.
-  - Ako se poruka ipak pojavi nakon Fast Refresh-a, napravi hard refresh.
-- “WebSocket connection … failed” na `wss://demos.yjs.dev`:
-  - Javni demo ponekad zatvara veze pod opterećenjem. Prebaci na lokalni `ws://localhost:1234` server.
-- Ne vidiš “Realtime connected · tasks: X”:
-  - Provjeri da je `RealtimeRoom` montiran na `project/[slug]` stranici i da `endpoint` pokazuje na ispravan URL.
-- Drag & drop ne propagira promjenu:
-  - Provjeri da su oba taba na istom `slug` (isti room). Ako je bilo seediranja podataka, daj nekoliko trenutaka i zatim probaj ponovno.
-
-### 6) Očekivano ponašanje bez backend-a
-
-Realtime koristi Yjs dokument u memoriji preko websocket-a. Nema trajne pohrane (persistencije) — zatvaranjem oba taba briše se stanje. Ovo je dovoljno za demonstraciju kolaboracije (broadcast promjena i konfliktno ažuriranje s CRDT-om u pozadini).
+Realtime uses Yjs document in memory via websocket. No persistence - closing both tabs clears the state. This is sufficient for demonstrating collaboration (broadcast changes and conflict resolution with CRDT).
