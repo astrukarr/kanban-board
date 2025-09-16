@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 const isCI = !!process.env.CI;
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './e2e',
   timeout: 30_000,
   retries: isCI ? 2 : 0,
   // U CI aplikaciju pokrećemo u workflowu (npm run start). Lokalno možemo koristiti dev server.

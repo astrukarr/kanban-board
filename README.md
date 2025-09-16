@@ -194,7 +194,7 @@ src/
 ├── lib/__tests__/       # API tests
 └── utils/__tests__/    # Utility tests
 
-tests/                   # Playwright E2E tests (e.g., dnd.spec.ts)
+e2e/                     # Playwright E2E tests (e.g., dnd.spec.ts)
 ```
 
 ### E2E Scenarios (Playwright)
