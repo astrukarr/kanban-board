@@ -1,6 +1,6 @@
-# Kanban Board Application
+# Kanban Board (Next.js 15, TypeScript, Tailwind, Playwright, Jest)
 
-A modern, responsive Kanban board application built with **Next.js 15**, **TypeScript**, and **Tailwind CSS**. Features drag-and-drop functionality, PWA support, and comprehensive testing.
+A modern, responsive Kanban board with drag‑and‑drop, PWA offline support, and realtime collaboration (Yjs + y-websocket). The test suite includes unit/integration (Jest + RTL) and end‑to‑end (Playwright).
 
 ## Features
 
@@ -26,7 +26,14 @@ A modern, responsive Kanban board application built with **Next.js 15**, **TypeS
 - **Performance Optimized** - Dynamic imports, memoization, and code splitting
 - **Bundle Analysis** - Built-in bundle size monitoring
 - **Error Handling** - Centralized error management with retry logic
-- **Testing** - Comprehensive test suite with Jest and React Testing Library
+- **Testing** - Jest + React Testing Library (unit/integration) i Playwright (E2E)
+
+### Why Playwright (not Cypress)
+
+- **Multi‑browser**: Chromium, Firefox, and WebKit out of the box.
+- **Parallel & fast**: tests run in parallel with stable tracing/recording.
+- **Realtime collaboration**: easy multi‑context setup for 2+ clients; Cypress struggles with multi‑tab/multi‑window scenarios.
+- **CI‑friendly**: official GitHub Actions examples and simple browser installation.
 
 ## Architecture
 
@@ -74,7 +81,7 @@ src/
 
 ### Prerequisites
 
-- **Node.js** 18+
+- **Node.js** 18.18+, 20, or 22
 - **npm** or **yarn**
 
 ### Installation
@@ -121,6 +128,10 @@ NEXT_PUBLIC_MAX_RETRIES=3
 npm run dev          # Start development server
 npm run build        # Build for production
 npm run start        # Start production server
+npm run e2e          # Playwright E2E (headless)
+npm run e2e:headed   # E2E in a visible window
+npm run e2e:ui       # Playwright UI mode
+npm run e2e:report   # Open the Playwright report
 ```
 
 ### Code Quality
@@ -138,6 +149,10 @@ npm run format:check # Check code formatting
 npm test             # Run tests
 npm run test:watch   # Run tests in watch mode
 npm run test:coverage # Run tests with coverage
+
+# E2E (Playwright)
+npx playwright install
+npm run e2e
 ```
 
 ### Analysis
@@ -178,6 +193,23 @@ src/
 ├── hooks/__tests__/     # Hook tests
 ├── lib/__tests__/       # API tests
 └── utils/__tests__/    # Utility tests
+
+tests/                   # Playwright E2E tests (e.g., dnd.spec.ts)
+```
+
+### E2E Scenarios (Playwright)
+
+- Navigation (landing, dashboard, login, settings, project/[slug])
+- Drag & drop tasks between columns
+- PWA offline banner and fallback behavior
+- Basic auth flow (mocked where applicable)
+
+Local run:
+
+```bash
+npx playwright install
+npm run build && npm run start &
+PW_BASE_URL=http://localhost:3000 npm run e2e
 ```
 
 ## Styling & Design
@@ -309,3 +341,37 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with modern web technologies**
+
+## Pages
+
+- `/` (Landing): hero + features
+- `/login`: login form (mock auth / `jose`)
+- `/dashboard`: stats and recent projects
+- `/project/[slug]`: project info + Kanban board + realtime status
+- `/settings`: profile and preferences
+
+## Realtime (Yjs + y-websocket)
+
+- `RealtimeRoom` on `project/[slug]` connects to room `kanban-{slug}`.
+- Endpoint: `NEXT_PUBLIC_YWS_ENDPOINT` or `ws://localhost:1234` (dev default).
+- Open the same `slug` in two tabs and use “+ Mock task (test)” or DnD — changes propagate without refresh.
+
+Local websocket server (more stable than the public demo):
+
+```bash
+npx y-websocket --port 1234
+# If CLI is missing:
+npm i -g y-websocket && y-websocket --port 1234
+```
+
+Details: see `docs/REALTIME_TESTING.md`.
+
+## CI (GitHub Actions)
+
+- Workflow: `.github/workflows/playwright.yml`
+  - Install deps + Playwright browser, build, `start`, wait for port, and run `npm run e2e`.
+  - Uploads `playwright-report` as an artifact on every run.
+
+## Notes on Structure
+
+- This is NOT a monorepo (no `workspaces` in `package.json`). Source code lives under `src/`.
