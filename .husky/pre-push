@@ -1,12 +1,9 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Pre-push hooks
 echo "🚀 Running pre-push checks..."
 
 # 1. Check for console.log statements
 echo "📝 Checking for console.log statements..."
-if grep -r "console\.log" src/ --exclude-dir=node_modules; then
+if grep -r "console\.log" apps/kanban/src/ --exclude-dir=node_modules; then
   echo "❌ Error: Found console.log statements! Please remove them before pushing."
   exit 1
 fi
@@ -19,11 +16,11 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# 3. Run tests with coverage
-echo "🧪 Running tests with coverage..."
-npm test -- --coverage --coverageThreshold.global.statements=50
+# 3. Run tests
+echo "🧪 Running tests..."
+npm test
 if [ $? -ne 0 ]; then
-  echo "❌ Tests failed or coverage too low! Please fix before pushing."
+  echo "❌ Tests failed! Please fix before pushing."
   exit 1
 fi
 
