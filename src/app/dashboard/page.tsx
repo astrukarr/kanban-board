@@ -4,7 +4,6 @@ import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import AppLayout from '@/components/layout/AppLayout';
 import { DASHBOARD_BREADCRUMBS } from '@/constants/breadcrumbs';
 
-// Dynamically import dashboard components to reduce initial bundle size
 const StatsGrid = dynamic(() => import('@/components/dashboard/StatsGrid'), {
   loading: () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">

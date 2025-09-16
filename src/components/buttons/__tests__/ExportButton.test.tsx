@@ -11,6 +11,7 @@ jest.mock('next/image', () => {
     height,
     ...props
   }: React.ComponentProps<'img'>) {
+    // eslint-disable-next-line @next/next/no-img-element
     return <img src={src} alt={alt} width={width} height={height} {...props} />;
   };
 });

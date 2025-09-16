@@ -40,7 +40,6 @@ export const NewTaskForm = ({
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
-      {/* Title input */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2 text-gray-700">
           Title
@@ -55,7 +54,6 @@ export const NewTaskForm = ({
         )}
       </div>
 
-      {/* Description input */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2 text-gray-700">
           Description
@@ -67,7 +65,6 @@ export const NewTaskForm = ({
         />
       </div>
 
-      {/* Status select */}
       <div className="mb-6">
         <label className="block text-sm font-medium mb-2 text-gray-700">
           Status
@@ -82,7 +79,6 @@ export const NewTaskForm = ({
         </select>
       </div>
 
-      {/* Buttons */}
       <div className="flex gap-3 justify-end">
         <button
           type="button"

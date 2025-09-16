@@ -29,7 +29,7 @@ export type TasksAction =
   | { type: 'ADD_TASK'; payload: Task }
   | { type: 'REMOVE_TASK'; payload: string };
 
-// Početni state
+// Initial state
 const initialState: TasksState = {
   tasks: [],
   columns: {
@@ -148,12 +148,17 @@ export function useTasks() {
     setIsHydrated(true);
 
     const savedTasks = safeLocalStorageGet('kanban-tasks');
-    if (savedTasks) {
+
+    if (savedTasks && savedTasks !== '[]') {
       try {
         const tasks = JSON.parse(savedTasks);
-        dispatch({ type: 'LOAD_FROM_STORAGE', payload: tasks });
+        if (tasks.length > 0) {
+          dispatch({ type: 'LOAD_FROM_STORAGE', payload: tasks });
+        } else {
+          loadTasks(); // Fallback to API
+        }
       } catch (error) {
-        console.error('Error loading from localStorage:', error);
+        console.error('Error parsing localStorage tasks:', error);
         loadTasks(); // Fallback to API
       }
     } else {

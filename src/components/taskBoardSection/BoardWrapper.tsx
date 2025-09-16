@@ -1,23 +1,21 @@
 'use client';
 
-import { DndContext, DragOverlay } from '@dnd-kit/core';
-import React, { Suspense, lazy } from 'react';
-import { COLUMN_CONFIG } from '@/constants';
+import React from 'react';
 import { useTasks } from '@/hooks/useTasks';
 import { useDragAndDrop } from '@/hooks/useDragAndDrop';
-import { useTaskModal } from '@/hooks/useTaskModal';
-import TaskColumn from './TaskColumn';
-import TaskCard from '../TaskCard/Card';
-import Loading from '@/components/ui/Loading';
-
-// Lazy load heavy modal component
-const NewTaskModal = lazy(() =>
-  import('@/components/modals/NewTaskModal').then(module => ({
-    default: module.NewTaskModal,
-  }))
-);
+import { useRealtimeSetup } from '@/hooks/useRealtimeSetup';
+import { useRealtimeSeeding } from '@/hooks/useRealtimeSeeding';
+import { useTaskHandlers } from '@/hooks/useTaskHandlers';
+import { useBoardDerivations } from './useBoardDerivations';
+import { BoardLoadingStates } from './BoardLoadingStates';
+import { BoardContent } from './BoardContent';
 
 export default function BoardWrapper() {
+  // Realtime setup
+  const { roomActive, rtTasks, addOrUpdateTask, moveTaskRT } =
+    useRealtimeSetup();
+
+  // Local tasks
   const {
     tasks,
     columns,
@@ -29,93 +27,73 @@ export default function BoardWrapper() {
     isHydrated,
   } = useTasks();
 
-  // Use drag and drop hook
+  // Yjs seeding
+  const { isSeeded } = useRealtimeSeeding({
+    roomActive,
+    rtTasks,
+    tasks,
+    isHydrated,
+    addOrUpdateTask,
+  });
+
+  // Use drag and drop hook (Yjs as source of truth when room is active)
+  const tasksForDnd = roomActive ? rtTasks : tasks;
+  const moveForDnd = roomActive ? moveTaskRT : moveTask;
   const { activeTask, sensors, handleDragStart, handleDragEnd } =
     useDragAndDrop({
-      tasks,
-      moveTask,
+      tasks: tasksForDnd,
+      moveTask: (id, status) => {
+        moveForDnd(id, status);
+      },
     });
 
-  // Use task modal hook
+  // Task handlers
   const {
     isModalOpen,
     selectedStatus,
     handleAddTask,
-    handleTaskCreated,
     handleCloseModal,
-  } = useTaskModal({ addTask });
+    handleTaskCreatedUnified,
+  } = useTaskHandlers({
+    addTask,
+    roomActive,
+    addOrUpdateTask,
+  });
 
-  if (!isHydrated) {
-    return (
-      <div className="w-full p-4 sm:p-6 md:p-8 min-h-[600px]">
-        <Loading message="Loading tasks..." />
-      </div>
-    );
-  }
+  // Board derivations
+  const { derivedColumns } = useBoardDerivations({
+    roomActive,
+    rtTasks,
+    isSeeded,
+    tasks,
+    columns,
+  });
 
-  if (loading) {
+  // Loading states
+  if (!isHydrated || loading || error) {
     return (
-      <div className="w-full p-4 sm:p-6 md:p-8 min-h-[600px]">
-        <Loading message="Loading tasks..." />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="w-full p-4 sm:p-6 md:p-8 min-h-[600px]">
-        <Loading variant="error" message={`Error: ${error}`} />
-      </div>
+      <BoardLoadingStates
+        isHydrated={isHydrated}
+        loading={loading}
+        error={error}
+      />
     );
   }
 
   return (
-    <div className="w-full p-4 sm:p-6 md:p-8">
-      {/* <div className="mb-6">
-        <button
-          onClick={() => handleAddTask('todo')}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer"
-        >
-          + Add New Task
-        </button>
-      </div> */}
-
-      <DndContext
-        sensors={sensors}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {COLUMN_CONFIG.map(({ status, title }) => (
-            <TaskColumn
-              key={status}
-              title={title}
-              status={status}
-              items={columns[status as keyof typeof columns]}
-              onAddTask={handleAddTask}
-            />
-          ))}
-        </div>
-
-        <DragOverlay>
-          {activeTask ? (
-            <TaskCard
-              id={activeTask.id}
-              title={activeTask.title}
-              status={activeTask.status}
-            />
-          ) : null}
-        </DragOverlay>
-      </DndContext>
-
-      <Suspense fallback={<Loading message="Loading modal..." />}>
-        <NewTaskModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          onTaskCreated={handleTaskCreated}
-          defaultStatus={selectedStatus}
-        />
-      </Suspense>
-    </div>
+    <BoardContent
+      roomActive={roomActive}
+      rtCount={rtTasks.length}
+      sensors={sensors}
+      activeTask={activeTask}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      columns={derivedColumns}
+      onAddTask={handleAddTask}
+      isModalOpen={isModalOpen}
+      onCloseModal={handleCloseModal}
+      onTaskCreated={handleTaskCreatedUnified}
+      defaultStatus={selectedStatus}
+    />
   );
 }

@@ -22,7 +22,6 @@ function RecentProjectCard({ project }: RecentProjectCardProps) {
   return (
     <Link href={`/project/${project.slug}`} className="group block">
       <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-        {/* Project Icon */}
         <div
           className={`w-12 h-12 ${projectColor} rounded-xl flex items-center justify-center mb-3`}
         >
@@ -36,7 +35,6 @@ function RecentProjectCard({ project }: RecentProjectCardProps) {
           />
         </div>
 
-        {/* Project Info */}
         <div className="mb-3">
           <h3 className="font-semibold text-slate-800 mb-1 group-hover:text-indigo-600 transition-colors">
             {project.name}
@@ -48,7 +46,6 @@ function RecentProjectCard({ project }: RecentProjectCardProps) {
           </span>
         </div>
 
-        {/* Project Stats */}
         <div className="text-sm text-slate-600">
           <p className="mb-1">{project.tasksCount} tasks</p>
           <p className="text-xs">{project.lastActivity}</p>

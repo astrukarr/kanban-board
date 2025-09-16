@@ -6,7 +6,39 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Development optimizations
+  experimental: {
+    // Enable faster builds in development
+    optimizeCss: true,
+    // Reduce memory usage
+    memoryBasedWorkersCount: true,
+  },
+
+  // Webpack configuration for both dev and production
+  webpack: (config, { dev }) => {
+    // Deduplicate yjs to avoid multiple module instances across chunks
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve?.alias || {}),
+      yjs: require.resolve('yjs'),
+    };
+
+    if (dev) {
+      // Faster builds in development
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+      };
+
+      // Reduce memory usage
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: false, // Disable code splitting in dev for speed
+      };
+    }
+
+    return config;
+  },
 };
 
 const pwaConfig = withPWA({

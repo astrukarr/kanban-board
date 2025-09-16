@@ -9,7 +9,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50">
-      <Header data={data.header} currentPage="home" />
+      <Header data={data.header} />
 
       <HomeHero hero={data.hero} />
       <Features features={data.features} />

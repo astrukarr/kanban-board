@@ -18,13 +18,10 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-8">
-            {/* Profile Section */}
             <ProfileSection />
 
-            {/* Preferences Section */}
             <PreferencesSection />
 
-            {/* Actions Section */}
             <section>
               <h2 className="text-xl font-semibold text-slate-800 mb-4">
                 Actions
