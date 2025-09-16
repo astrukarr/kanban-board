@@ -1,6 +1,27 @@
-# Kanban Board (Next.js 15, TypeScript, Tailwind, Playwright, Jest)
+# Kanban Board Monorepo (Next.js 15, TypeScript, Tailwind, Playwright, Jest)
 
-A modern, responsive Kanban board with drag‑and‑drop, PWA offline support, and realtime collaboration (Yjs + y-websocket). The test suite includes unit/integration (Jest + RTL) and end‑to‑end (Playwright).
+A modern, responsive Kanban board with drag‑and‑drop, PWA offline support, and realtime collaboration (Yjs + y-websocket). Built as a **monorepo** using **Turborepo** for scalable development.
+
+## 🏗️ Monorepo Structure
+
+This project uses **Turborepo** to manage multiple packages in a single repository:
+
+```
+kanban-board/
+├── apps/
+│   └── kanban/              # Main Next.js application
+│       ├── src/            # Application source code
+│       ├── public/         # Static assets
+│       ├── e2e/           # Playwright E2E tests
+│       └── package.json   # App dependencies
+├── packages/
+│   └── shared-types/       # Shared TypeScript types
+│       ├── index.ts       # Common types (Task, User, etc.)
+│       └── package.json   # Package dependencies
+├── package.json           # Root workspace configuration
+├── turbo.json            # Turborepo build pipeline
+└── tsconfig.json         # Root TypeScript configuration
+```
 
 ## Features
 
@@ -26,7 +47,8 @@ A modern, responsive Kanban board with drag‑and‑drop, PWA offline support, a
 - **Performance Optimized** - Dynamic imports, memoization, and code splitting
 - **Bundle Analysis** - Built-in bundle size monitoring
 - **Error Handling** - Centralized error management with retry logic
-- **Testing** - Jest + React Testing Library (unit/integration) i Playwright (E2E)
+- **Testing** - Jest + React Testing Library (unit/integration) + Playwright (E2E)
+- **Monorepo** - Turborepo for scalable development and build optimization
 
 ### Why Playwright (not Cypress)
 
@@ -35,54 +57,12 @@ A modern, responsive Kanban board with drag‑and‑drop, PWA offline support, a
 - **Realtime collaboration**: easy multi‑context setup for 2+ clients; Cypress struggles with multi‑tab/multi‑window scenarios.
 - **CI‑friendly**: official GitHub Actions examples and simple browser installation.
 
-## Architecture
-
-### Project Structure
-
-```
-src/
-├── app/                    # Next.js App Router pages
-│   ├── dashboard/         # Dashboard page
-│   ├── login/            # Authentication page
-│   ├── project/[slug]/   # Dynamic project pages
-│   └── settings/         # Settings page
-├── components/            # React components
-│   ├── buttons/          # Reusable button components
-│   ├── dashboard/        # Dashboard-specific components
-│   ├── layout/           # Layout components
-│   ├── modals/           # Modal components
-│   ├── taskBoardSection/ # Kanban board components
-│   ├── TaskCard/         # Task card components
-│   └── ui/               # Generic UI components
-├── hooks/                 # Custom React hooks
-├── lib/                  # API and data layer
-├── types/                # TypeScript type definitions
-├── utils/                # Utility functions
-└── constants/            # Application constants
-```
-
-### Key Components
-
-#### Core Hooks
-
-- **`useTasks`** - Task state management with reducer pattern
-- **`useDragAndDrop`** - Drag and drop functionality
-- **`useTaskModal`** - Modal state management
-- **`useOnlineStatus`** - Network status monitoring
-
-#### Component Architecture
-
-- **Modular Design** - Small, focused components
-- **Custom Hooks** - Reusable business logic
-- **Type Safety** - Full TypeScript coverage
-- **Performance** - Memoization and lazy loading
-
 ## Getting Started
 
 ### Prerequisites
 
 - **Node.js** 18.18+, 20, or 22
-- **npm** or **yarn**
+- **npm** 10.0.0+
 
 ### Installation
 
@@ -93,7 +73,7 @@ src/
    cd kanban-board
    ```
 
-2. **Install dependencies**
+2. **Install dependencies** (installs for all packages)
 
    ```bash
    npm install
@@ -112,43 +92,52 @@ src/
 
 ### Environment Variables
 
-Create a `.env.local` file:
+Create a `.env.local` file in `apps/kanban/`:
 
 ```env
 NEXT_PUBLIC_API_URL=https://jsonplaceholder.typicode.com
 NEXT_PUBLIC_API_TIMEOUT=10000
 NEXT_PUBLIC_MAX_RETRIES=3
+NEXT_PUBLIC_YWS_ENDPOINT=wss://demos.yjs.dev
 ```
 
 ## Available Scripts
 
-### Development
+### Development (Monorepo)
 
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production
+npm run dev          # Start development server (Turborepo)
+npm run build        # Build all packages (Turborepo)
 npm run start        # Start production server
-npm run e2e          # Playwright E2E (headless)
-npm run e2e:headed   # E2E in a visible window
-npm run e2e:ui       # Playwright UI mode
-npm run e2e:report   # Open the Playwright report
+npm run lint         # Lint all packages (Turborepo)
+npm run test         # Test all packages (Turborepo)
+npm run typecheck    # TypeScript check all packages (Turborepo)
+npm run e2e          # Playwright E2E tests (Turborepo)
+```
+
+### Individual Package Scripts
+
+```bash
+# Run commands in specific package
+cd apps/kanban && npm run dev
+cd packages/shared-types && npm run build
 ```
 
 ### Code Quality
 
 ```bash
-npm run lint         # Run ESLint
-npm run lint:fix     # Fix ESLint issues
-npm run format       # Format code with Prettier
-npm run format:check # Check code formatting
+npm run lint         # Run ESLint on all packages
+npm run lint:fix     # Fix ESLint issues (in apps/kanban)
+npm run format       # Format code with Prettier (in apps/kanban)
+npm run format:check # Check code formatting (in apps/kanban)
 ```
 
 ### Testing
 
 ```bash
-npm test             # Run tests
-npm run test:watch   # Run tests in watch mode
-npm run test:coverage # Run tests with coverage
+npm test             # Run all tests (Turborepo)
+npm run test:watch   # Run tests in watch mode (in apps/kanban)
+npm run test:coverage # Run tests with coverage (in apps/kanban)
 
 # E2E (Playwright)
 npx playwright install
@@ -158,8 +147,8 @@ npm run e2e
 ### Analysis
 
 ```bash
-npm run analyze      # Analyze bundle size
-npm run bundle-analysis # Generate bundle report
+npm run analyze      # Analyze bundle size (in apps/kanban)
+npm run bundle-analysis # Generate bundle report (in apps/kanban)
 ```
 
 ## Testing
@@ -174,27 +163,27 @@ npm run bundle-analysis # Generate bundle report
 ### Running Tests
 
 ```bash
-# Run all tests
+# Run all tests (monorepo)
 npm test
 
-# Run tests with coverage
-npm run test:coverage
+# Run tests with coverage (in apps/kanban)
+cd apps/kanban && npm run test:coverage
 
-# Run tests in watch mode
-npm run test:watch
+# Run tests in watch mode (in apps/kanban)
+cd apps/kanban && npm run test:watch
 ```
 
 ### Test Structure
 
 ```
-src/
-├── __tests__/           # Global tests
-├── components/__tests__/ # Component tests
-├── hooks/__tests__/     # Hook tests
-├── lib/__tests__/       # API tests
-└── utils/__tests__/    # Utility tests
-
-e2e/                     # Playwright E2E tests (e.g., dnd.spec.ts)
+apps/kanban/
+├── src/
+│   ├── __tests__/           # Global tests
+│   ├── components/__tests__/ # Component tests
+│   ├── hooks/__tests__/     # Hook tests
+│   ├── lib/__tests__/       # API tests
+│   └── utils/__tests__/    # Utility tests
+└── e2e/                     # Playwright E2E tests
 ```
 
 ### E2E Scenarios (Playwright)
@@ -211,6 +200,22 @@ npx playwright install
 npm run build && npm run start &
 PW_BASE_URL=http://localhost:3000 npm run e2e
 ```
+
+## Monorepo Benefits
+
+### Turborepo Features
+
+- **Build Caching** - Faster builds with intelligent caching
+- **Parallel Execution** - Run tasks across packages in parallel
+- **Dependency Graph** - Automatic task dependency resolution
+- **Incremental Builds** - Only rebuild what changed
+
+### Package Management
+
+- **Shared Dependencies** - Common dependencies in root
+- **Workspace Isolation** - Each package has its own dependencies
+- **Type Sharing** - Shared types via `@kanban/shared-types`
+- **Build Optimization** - Turborepo optimizes build order
 
 ## Styling & Design
 
@@ -233,13 +238,14 @@ PW_BASE_URL=http://localhost:3000 npm run e2e
 ### TypeScript
 
 - **Strict mode** enabled
-- **Path mapping** with `@/` alias
-- **Type definitions** in `src/types/`
+- **Path mapping** with `@/` and `@kanban/` aliases
+- **Type definitions** in `src/types/` and `packages/shared-types/`
 - **No `any` types** in production code
 
 ### ESLint & Prettier
 
-- **Next.js ESLint config**
+- **Next.js ESLint config** for apps/kanban
+- **Basic ESLint config** for packages/shared-types
 - **Prettier integration**
 - **Husky pre-commit hooks**
 - **Consistent code formatting**
@@ -279,7 +285,7 @@ npm run start
 ### Bundle Analysis
 
 ```bash
-npm run analyze
+cd apps/kanban && npm run analyze
 # Opens bundle analyzer in browser
 ```
 
@@ -297,7 +303,7 @@ npm run analyze
 - **TypeScript**: 100% coverage
 - **ESLint**: 0 errors, 6 warnings
 - **Prettier**: Consistent formatting
-- **Tests**: 177 tests passing
+- **Tests**: 194 tests passing
 - **Bundle**: 102kB shared JS
 
 ### Best Practices
@@ -337,10 +343,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Tailwind CSS** for styling utilities
 - **@dnd-kit** for drag and drop functionality
 - **React Testing Library** for testing utilities
+- **Turborepo** for monorepo management
 
 ---
 
-**Built with modern web technologies**
+**Built with modern web technologies and monorepo architecture**
 
 ## Pages
 
@@ -354,7 +361,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - `RealtimeRoom` on `project/[slug]` connects to room `kanban-{slug}`.
 - Endpoint: `NEXT_PUBLIC_YWS_ENDPOINT` or `ws://localhost:1234` (dev default).
-- Open the same `slug` in two tabs and use “+ Mock task (test)” or DnD — changes propagate without refresh.
+- Open the same `slug` in two tabs and use "+ Mock task (test)" or DnD — changes propagate without refresh.
 
 Local websocket server (more stable than the public demo):
 
@@ -368,10 +375,16 @@ Details: see `docs/REALTIME_TESTING.md`.
 
 ## CI (GitHub Actions)
 
-- Workflow: `.github/workflows/playwright.yml`
+- Workflow: `.github/workflows/ci.yml`
   - Install deps + Playwright browser, build, `start`, wait for port, and run `npm run e2e`.
   - Uploads `playwright-report` as an artifact on every run.
+  - **Monorepo support**: Uses Turborepo for all tasks
 
-## Notes on Structure
+## Monorepo Migration
 
-- This is NOT a monorepo (no `workspaces` in `package.json`). Source code lives under `src/`.
+This project was migrated from a single Next.js app to a monorepo structure:
+
+- **Before**: Single `src/` directory with all code
+- **After**: `apps/kanban/` with original code + `packages/shared-types/` for shared types
+- **Benefits**: Scalable architecture, shared dependencies, build optimization
+- **Turborepo**: Manages build pipeline and caching across packages

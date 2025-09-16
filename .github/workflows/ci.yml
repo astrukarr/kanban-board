@@ -36,7 +36,7 @@ jobs:
         run: npm run build
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: cd apps/kanban && npx playwright install --with-deps chromium
 
       - name: Start application for E2E
         run: npm run start & npx wait-on http://localhost:3000
