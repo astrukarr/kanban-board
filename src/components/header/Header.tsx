@@ -28,7 +28,7 @@ export default function Header({ data }: HeaderProps) {
             alt={data.name.alt}
             width={data.name.width}
             height={data.name.height}
-            className="md:w-24 md:h-10"
+            className="w-auto h-auto md:w-24 md:h-auto"
             priority
             loading="eager"
           />
