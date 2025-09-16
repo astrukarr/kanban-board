@@ -96,3 +96,6 @@ export type ColumnConfig = {
 // Re-export error types
 export type { ApiError, ErrorState } from './errors';
 export { ERROR_MESSAGES, ERROR_TYPES } from './errors';
+
+// Re-export task types
+export type { TasksState, TasksAction } from './tasks';

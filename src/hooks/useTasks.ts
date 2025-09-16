@@ -6,104 +6,10 @@ import {
   safeLocalStorageGet,
   createApiError,
 } from '@/utils/errorHelpers';
+import { tasksReducer, initialState } from '@/utils/tasksReducer';
+import type { TasksState } from '@/types/tasks';
 
-// State tip
-export interface TasksState {
-  tasks: Task[];
-  columns: {
-    todo: Task[];
-    in_progress: Task[];
-    completed: Task[];
-  };
-  loading: boolean;
-  error: string | null;
-}
-
-// Action tipovi
-export type TasksAction =
-  | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'SET_ERROR'; payload: string | null }
-  | { type: 'SET_TASKS'; payload: Task[] }
-  | { type: 'MOVE_TASK'; payload: { taskId: string; newStatus: TaskStatus } }
-  | { type: 'LOAD_FROM_STORAGE'; payload: Task[] }
-  | { type: 'ADD_TASK'; payload: Task }
-  | { type: 'REMOVE_TASK'; payload: string };
-
-// Initial state
-const initialState: TasksState = {
-  tasks: [],
-  columns: {
-    todo: [],
-    in_progress: [],
-    completed: [],
-  },
-  loading: false,
-  error: null,
-};
-
-// Reducer funkcija
-function tasksReducer(state: TasksState, action: TasksAction): TasksState {
-  switch (action.type) {
-    case 'SET_LOADING':
-      return { ...state, loading: action.payload };
-
-    case 'SET_ERROR':
-      return { ...state, error: action.payload, loading: false };
-
-    case 'SET_TASKS':
-      return {
-        ...state,
-        tasks: action.payload,
-        columns: createColumns(action.payload),
-        loading: false,
-        error: null,
-      };
-
-    case 'MOVE_TASK': {
-      const { taskId, newStatus } = action.payload;
-      const updatedTasks = state.tasks.map(task =>
-        task.id === taskId ? { ...task, status: newStatus } : task
-      );
-      return {
-        ...state,
-        tasks: updatedTasks,
-        // Don't recalculate columns here - let useMemo handle it
-      };
-    }
-
-    case 'LOAD_FROM_STORAGE':
-      return {
-        ...state,
-        tasks: action.payload,
-        columns: createColumns(action.payload),
-        loading: false,
-        error: null,
-      };
-
-    case 'ADD_TASK':
-      const newTasks = [...state.tasks, action.payload];
-      return {
-        ...state,
-        tasks: newTasks,
-        // Don't recalculate columns here - let useMemo handle it
-      };
-
-    case 'REMOVE_TASK':
-      const filteredTasks = state.tasks.filter(
-        task => task.id !== action.payload
-      );
-      return {
-        ...state,
-        tasks: filteredTasks,
-        // Don't recalculate columns here - let useMemo handle it
-      };
-
-    default:
-      return state;
-  }
-}
-
-// Custom hook
+// Custom hook for tasks management
 export function useTasks() {
   const [state, dispatch] = useReducer(tasksReducer, initialState);
   const [isHydrated, setIsHydrated] = useState(false);
