@@ -60,6 +60,6 @@ export const homePageData: HomePageData = {
     backgroundColor: 'indigo',
   },
   footer: {
-    copyright: '© 2024 Kanban Board. All rights reserved.',
+    copyright: '© 2025 Kanban Board. All rights reserved.',
   },
 };

@@ -16,11 +16,11 @@ This document covers how to run and test realtime synchronization on the kanban 
    http://localhost:3000/project/test
    ```
 
-3. **Enable realtime mode:**
-   Add `?rt=1` to both URLs:
+3. **Enable realtime mode:** Add `?rt=1` to both URLs:
    ```
    http://localhost:3000/project/test?rt=1
    ```
+   We currently use `rt=1` to opt-in to realtime during development to avoid opening a websocket when only a single tab is open. This keeps single‑tab usage fast and predictable while still allowing collaboration tests on demand.
 
 You should see "Realtime connected · tasks: X" status at the top of the board.
 
@@ -56,3 +56,9 @@ Then update the endpoint in `src/app/project/[slug]/page.tsx` and refresh both t
 ## Expected Behavior
 
 Realtime uses Yjs document in memory via websocket. No persistence - closing both tabs clears the state. This is sufficient for demonstrating collaboration (broadcast changes and conflict resolution with CRDT).
+
+## Roadmap: Remove `rt=1` via Multi‑tab Detection
+
+- Ideal behavior is to remove the `rt=1` flag and rely on per‑room multi‑tab detection so the websocket connects only when at least two tabs of the same project are open.
+- This avoids accidental socket connections on single‑tab browsing and makes testing intuitive: open a second tab and realtime activates automatically.
+- See `docs/NEXT_STEPS.md` → “Realtime Activation via Multi-Tab Detection (Replace rt=1)”.

@@ -73,6 +73,10 @@ src/
 - `/project/[slug]` - Kanban board with real-time collaboration
 - `/settings` - Profile and preferences (protected route - requires authentication)
 
+## Project Docs
+
+- The next steps roadmap and feature planning live in `docs/NEXT_STEPS.md`. Check that file for upcoming work, acceptance criteria, and implementation notes.
+
 ## Real-time Collaboration
 
 The app uses Yjs + y-websocket for real-time updates. Open the same project in multiple tabs to see live collaboration.
