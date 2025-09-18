@@ -6,11 +6,12 @@ import { useDragAndDrop } from '@/hooks/useDragAndDrop';
 import { useRealtimeSetup } from '@/hooks/useRealtimeSetup';
 import { useRealtimeSeeding } from '@/hooks/useRealtimeSeeding';
 import { useTaskHandlers } from '@/hooks/useTaskHandlers';
+import { BoardErrorBoundary } from '@/components/errorBoundary';
 import { useBoardDerivations } from './useBoardDerivations';
 import { BoardLoadingStates } from './BoardLoadingStates';
 import { BoardContent } from './BoardContent';
 
-export default function BoardWrapper() {
+function BoardWrapperContent() {
   // Realtime setup
   const { roomActive, rtTasks, addOrUpdateTask, moveTaskRT } =
     useRealtimeSetup();
@@ -95,5 +96,13 @@ export default function BoardWrapper() {
       onTaskCreated={handleTaskCreatedUnified}
       defaultStatus={selectedStatus}
     />
+  );
+}
+
+export default function BoardWrapper() {
+  return (
+    <BoardErrorBoundary>
+      <BoardWrapperContent />
+    </BoardErrorBoundary>
   );
 }

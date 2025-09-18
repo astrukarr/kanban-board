@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Task, TaskStatus } from '@/types';
 import { NewTaskForm } from './NewTaskForm';
 import { Toast } from '@/components/ui/Toast';
+import { ModalErrorBoundary } from '@/components/errorBoundary';
 import { createTask, createTaskAPI } from '@/utils/taskCreation';
 import { createApiError } from '@/utils/errorHelpers';
 
@@ -53,7 +54,7 @@ export const NewTaskModal = ({
   if (!isOpen) return null;
 
   return (
-    <>
+    <ModalErrorBoundary onClose={onClose}>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
           <div className="flex items-center justify-between mb-4">
@@ -93,6 +94,6 @@ export const NewTaskModal = ({
           onClose={() => setToast(null)}
         />
       )}
-    </>
+    </ModalErrorBoundary>
   );
 };

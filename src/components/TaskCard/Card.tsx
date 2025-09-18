@@ -6,6 +6,7 @@ import { TaskCardProps } from '@/types';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { STATUS_LABELS } from '@/constants';
 import { calculateCounts, calculateProgress, getColorConfig } from '@/utils';
+import { TaskCardErrorBoundary } from '@/components/errorBoundary';
 import ProgressBar from './ProgressBar';
 import AvatarGroup from './AvatarGroup';
 import Image from 'next/image';
@@ -126,4 +127,15 @@ function TaskCard({ id, title, status, remote }: EnhancedTaskCardProps) {
 }
 
 // Memoize component to prevent unnecessary re-renders when props haven't changed
-export default React.memo(TaskCard);
+const MemoizedTaskCard = React.memo(TaskCard);
+
+// Export with error boundary
+export default function TaskCardWithErrorBoundary(
+  props: EnhancedTaskCardProps
+) {
+  return (
+    <TaskCardErrorBoundary taskId={props.id}>
+      <MemoizedTaskCard {...props} />
+    </TaskCardErrorBoundary>
+  );
+}
