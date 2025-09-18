@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { TaskCardProps } from '@/types';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { STATUS_LABELS } from '@/constants';
 import { calculateCounts, calculateProgress, getColorConfig } from '@/utils';
 import ProgressBar from './ProgressBar';
@@ -13,6 +13,7 @@ import Image from 'next/image';
 type EnhancedTaskCardProps = TaskCardProps & { remote?: boolean };
 
 function TaskCard({ id, title, status, remote }: EnhancedTaskCardProps) {
+  const reduceMotion = useReducedMotion();
   // Memoize expensive calculations to prevent unnecessary recalculations
   const { comments, checks } = useMemo(() => calculateCounts(id), [id]);
   const safeComments = Number.isFinite(comments) ? comments : 0;
@@ -54,10 +55,12 @@ function TaskCard({ id, title, status, remote }: EnhancedTaskCardProps) {
       <AnimatePresence>
         {remote && (
           <motion.div
-            initial={{ opacity: 0, y: -6 }}
+            initial={
+              reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -6 }
+            }
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.25 }}
+            exit={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -6 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
             className="mb-2 inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold text-indigo-700 border border-indigo-200"
           >
             Updated remotely
@@ -83,27 +86,35 @@ function TaskCard({ id, title, status, remote }: EnhancedTaskCardProps) {
       <div className="mt-4 flex items-center justify-between">
         <AvatarGroup count={3} />
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-slate-800">
+          <div
+            className="flex items-center gap-1 text-slate-800"
+            aria-label={`Comments: ${safeComments}`}
+          >
             <Image
               src="/static/icons/Comments.svg"
-              alt="Comments"
+              alt=""
               width={20}
               height={20}
               className="h-5 w-5"
-              loading="eager"
+              loading="lazy"
               priority={false}
+              aria-hidden="true"
             />
             <span className="text-sm font-semibold">{safeComments}</span>
           </div>
-          <div className="flex items-center gap-1 text-slate-800">
+          <div
+            className="flex items-center gap-1 text-slate-800"
+            aria-label={`Checks: ${safeChecks}`}
+          >
             <Image
               src="/static/icons/Checkmark.svg"
-              alt="Checks"
+              alt=""
               width={20}
               height={20}
               className="h-5 w-5"
-              loading="eager"
+              loading="lazy"
               priority={false}
+              aria-hidden="true"
             />
 
             <span className="text-sm font-semibold">{safeChecks}</span>

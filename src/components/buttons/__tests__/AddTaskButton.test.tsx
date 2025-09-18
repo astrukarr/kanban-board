@@ -40,13 +40,14 @@ describe('AddTaskButton Component', () => {
     });
 
     it('should render plus icon', () => {
-      render(<AddTaskButton {...defaultProps} />);
+      const { container } = render(<AddTaskButton {...defaultProps} />);
 
-      const icon = screen.getByAltText('Add New Task');
+      const icon = container.querySelector('img');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute('src', '/static/icons/Plus.svg');
       expect(icon).toHaveAttribute('width', '20');
       expect(icon).toHaveAttribute('height', '20');
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
     });
   });
 
@@ -71,9 +72,9 @@ describe('AddTaskButton Component', () => {
     });
 
     it('should have correct icon classes', () => {
-      render(<AddTaskButton {...defaultProps} />);
+      const { container } = render(<AddTaskButton {...defaultProps} />);
 
-      const icon = screen.getByAltText('Add New Task');
+      const icon = container.querySelector('img');
       expect(icon).toHaveClass('h-5', 'w-5');
     });
   });

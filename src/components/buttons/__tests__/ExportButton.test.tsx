@@ -34,13 +34,14 @@ describe('ExportButton Component', () => {
     });
 
     it('should render export icon', () => {
-      render(<ExportButton />);
+      const { container } = render(<ExportButton />);
 
-      const icon = screen.getByAltText('Export Data');
+      const icon = container.querySelector('img');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute('src', '/static/icons/ExportData.svg');
       expect(icon).toHaveAttribute('width', '20');
       expect(icon).toHaveAttribute('height', '20');
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
     });
   });
 
@@ -65,16 +66,16 @@ describe('ExportButton Component', () => {
     });
 
     it('should have correct icon classes', () => {
-      render(<ExportButton />);
+      const { container } = render(<ExportButton />);
 
-      const icon = screen.getByAltText('Export Data');
+      const icon = container.querySelector('img');
       expect(icon).toHaveClass('h-5', 'w-5');
     });
 
     it('should have aria-hidden on icon', () => {
-      render(<ExportButton />);
+      const { container } = render(<ExportButton />);
 
-      const icon = screen.getByAltText('Export Data');
+      const icon = container.querySelector('img');
       expect(icon).toHaveAttribute('aria-hidden', 'true');
     });
   });
@@ -88,7 +89,7 @@ describe('ExportButton Component', () => {
 
       expect(children).toHaveLength(2);
       expect(children[0]).toHaveTextContent('Export Data'); // Text first
-      expect(children[1]).toHaveAttribute('alt', 'Export Data'); // Icon second
+      expect(children[1]).toHaveAttribute('aria-hidden', 'true'); // Icon second
     });
   });
 
@@ -108,9 +109,9 @@ describe('ExportButton Component', () => {
     });
 
     it('should have aria-hidden on decorative icon', () => {
-      render(<ExportButton />);
+      const { container } = render(<ExportButton />);
 
-      const icon = screen.getByAltText('Export Data');
+      const icon = container.querySelector('img');
       expect(icon).toHaveAttribute('aria-hidden', 'true');
     });
   });
@@ -123,9 +124,9 @@ describe('ExportButton Component', () => {
     });
 
     it('should use correct icon source', () => {
-      render(<ExportButton />);
+      const { container } = render(<ExportButton />);
 
-      const icon = screen.getByAltText('Export Data');
+      const icon = container.querySelector('img');
       expect(icon).toHaveAttribute('src', '/static/icons/ExportData.svg');
     });
   });

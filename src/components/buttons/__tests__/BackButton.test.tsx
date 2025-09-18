@@ -19,13 +19,14 @@ jest.mock('next/image', () => {
 describe('BackButton Component', () => {
   describe('Rendering', () => {
     it('should render back arrow icon', () => {
-      render(<BackButton />);
+      const { container } = render(<BackButton />);
 
-      const icon = screen.getByAltText('Back');
+      const icon = container.querySelector('img');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute('src', '/static/icons/ArrowRight.svg');
       expect(icon).toHaveAttribute('width', '20');
       expect(icon).toHaveAttribute('height', '20');
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('should render back text', () => {
@@ -37,17 +38,17 @@ describe('BackButton Component', () => {
   });
 
   describe('Styling', () => {
-    it('should have correct container classes', () => {
+    it('should have correct button classes', () => {
       render(<BackButton />);
 
-      const container = screen.getByText('Back To Project').closest('div');
-      expect(container).toHaveClass('flex', 'items-center', 'gap-2');
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('flex', 'items-center', 'gap-2', 'rounded-md');
     });
 
     it('should have correct icon classes', () => {
-      render(<BackButton />);
+      const { container } = render(<BackButton />);
 
-      const icon = screen.getByAltText('Back');
+      const icon = container.querySelector('img');
       expect(icon).toHaveClass('h-5', 'w-5', 'rotate-180');
     });
 
@@ -63,15 +64,16 @@ describe('BackButton Component', () => {
     it('should be accessible', () => {
       render(<BackButton />);
 
-      expect(screen.getByAltText('Back')).toBeInTheDocument();
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('aria-label', 'Back to project');
       expect(screen.getByText('Back To Project')).toBeInTheDocument();
     });
 
-    it('should have proper alt text for icon', () => {
-      render(<BackButton />);
+    it('should have aria-hidden on decorative icon', () => {
+      const { container } = render(<BackButton />);
 
-      const icon = screen.getByAltText('Back');
-      expect(icon).toBeInTheDocument();
+      const icon = container.querySelector('img');
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
     });
   });
 
@@ -79,8 +81,8 @@ describe('BackButton Component', () => {
     it('should render in correct order', () => {
       render(<BackButton />);
 
-      const container = screen.getByText('Back To Project').closest('div');
-      const children = Array.from(container?.children || []);
+      const button = screen.getByRole('button');
+      const children = Array.from(button.children);
 
       expect(children).toHaveLength(2);
       expect(children[0]).toHaveClass('rotate-180'); // Icon

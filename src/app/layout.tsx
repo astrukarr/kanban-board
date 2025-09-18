@@ -22,8 +22,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
+        {/* Skip to content link for keyboard users */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-slate-900 focus:shadow"
+        >
+          Skip to main content
+        </a>
         <OfflineBanner />
-        {children}
+        <main id="main-content" role="main">
+          {children}
+        </main>
       </body>
     </html>
   );
