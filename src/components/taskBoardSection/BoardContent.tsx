@@ -15,10 +15,10 @@ const NewTaskModal = lazy(() =>
 type BoardContentProps = {
   roomActive: boolean;
   rtCount: number;
-  sensors: any;
-  activeTask: any;
-  onDragStart: (event: any) => void;
-  onDragEnd: (event: any) => void;
+  sensors: ReturnType<typeof import('@dnd-kit/core').useSensors>;
+  activeTask: import('@/types').Task | null;
+  onDragStart: (event: import('@dnd-kit/core').DragStartEvent) => void;
+  onDragEnd: (event: import('@dnd-kit/core').DragEndEvent) => void;
   columns: Columns;
   onAddTask: (status: 'todo' | 'in_progress' | 'completed') => void;
   isModalOpen: boolean;

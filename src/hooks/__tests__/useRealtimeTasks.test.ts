@@ -19,7 +19,10 @@ describe('useRealtimeTasks', () => {
   it('happy path: adds or updates a task and reflects in state', () => {
     const roomId = 'kanban-test';
     const doc = new Y.Doc();
-    setRoom(roomId, { doc, provider: {} as any });
+    setRoom(roomId, {
+      doc,
+      provider: {} as import('y-websocket').WebsocketProvider,
+    });
 
     const { result } = renderHook(() => useRealtimeTasks(roomId));
 
@@ -43,11 +46,14 @@ describe('useRealtimeTasks', () => {
   it('remote update: marks changed id as recently remote', () => {
     const roomId = 'kanban-remote';
     const doc = new Y.Doc();
-    setRoom(roomId, { doc, provider: {} as any });
+    setRoom(roomId, {
+      doc,
+      provider: {} as import('y-websocket').WebsocketProvider,
+    });
 
     const { result } = renderHook(() => useRealtimeTasks(roomId));
 
-    const yarray = doc.getArray<{ id: string; title: string; status: any }>(
+    const yarray = doc.getArray<{ id: string; title: string; status: unknown }>(
       'tasks'
     );
 

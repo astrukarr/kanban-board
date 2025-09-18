@@ -4,12 +4,12 @@ export function useOnlineStatus() {
   const [isOnline, setIsOnline] = useState(true);
   const [wasOffline, setWasOffline] = useState(false);
 
+  const resetWasOffline = () => setWasOffline(false);
+
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
-      if (wasOffline) {
-        setWasOffline(false);
-      }
+      // Don't reset wasOffline immediately - let OfflineBanner handle it
     };
 
     const handleOffline = () => {
@@ -24,7 +24,7 @@ export function useOnlineStatus() {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, [wasOffline]);
+  }, []);
 
-  return { isOnline, wasOffline };
+  return { isOnline, wasOffline, resetWasOffline };
 }

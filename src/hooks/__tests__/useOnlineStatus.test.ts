@@ -69,7 +69,7 @@ describe('useOnlineStatus Hook', () => {
       });
 
       expect(result.current.isOnline).toBe(true);
-      expect(result.current.wasOffline).toBe(false);
+      expect(result.current.wasOffline).toBe(true); // wasOffline stays true until manually reset
     });
 
     it('should not change wasOffline when already online', () => {
@@ -186,7 +186,7 @@ describe('useOnlineStatus Hook', () => {
       });
 
       expect(result.current.isOnline).toBe(true);
-      expect(result.current.wasOffline).toBe(false);
+      expect(result.current.wasOffline).toBe(true); // wasOffline stays true until manually reset
 
       // Go offline again
       act(() => {
@@ -204,7 +204,7 @@ describe('useOnlineStatus Hook', () => {
       });
 
       expect(result.current.isOnline).toBe(true);
-      expect(result.current.wasOffline).toBe(false);
+      expect(result.current.wasOffline).toBe(true); // wasOffline stays true until manually reset
     });
 
     it('should handle rapid state changes', () => {
@@ -273,7 +273,7 @@ describe('useOnlineStatus Hook', () => {
   });
 
   describe('Dependency Array', () => {
-    it('should recreate event listeners when wasOffline changes', () => {
+    it('should not recreate event listeners when wasOffline changes', () => {
       const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
       const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
@@ -285,9 +285,9 @@ describe('useOnlineStatus Hook', () => {
         window.dispatchEvent(offlineEvent);
       });
 
-      // Event listeners should be recreated due to wasOffline dependency
-      expect(removeEventListenerSpy).toHaveBeenCalled();
-      expect(addEventListenerSpy).toHaveBeenCalled();
+      // Event listeners should NOT be recreated since we removed wasOffline from dependency array
+      expect(removeEventListenerSpy).not.toHaveBeenCalled();
+      expect(addEventListenerSpy).toHaveBeenCalledTimes(2); // Only called once on mount
 
       addEventListenerSpy.mockRestore();
       removeEventListenerSpy.mockRestore();

@@ -157,7 +157,7 @@ describe('useTasks Hook', () => {
     });
 
     it('should return state unchanged for unknown action', () => {
-      const action = { type: 'UNKNOWN' as any, payload: null };
+      const action = { type: 'UNKNOWN' as unknown, payload: null };
       const newState = tasksReducer(initialState, action);
 
       expect(newState).toEqual(initialState);
@@ -331,7 +331,7 @@ describe('useTasks Hook', () => {
     });
 
     it('should not save to localStorage when tasks array is empty', () => {
-      const { result } = renderHook(() => useTasks());
+      renderHook(() => useTasks());
 
       // Initial state has empty tasks, so no save should happen
       expect(mockSafeLocalStorageSet).not.toHaveBeenCalled();
@@ -356,8 +356,6 @@ describe('useTasks Hook', () => {
     it('should recalculate columns when tasks change', () => {
       const { result } = renderHook(() => useTasks());
       const newTask: Task = { id: '1', title: 'Test Task', status: 'todo' };
-
-      const initialColumns = result.current.columns;
 
       act(() => {
         result.current.addTask(newTask);

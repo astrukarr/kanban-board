@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 });
 
 export default [
-  ...compat.extends('next/core-web-vitals', 'plugin:prettier/recommended'),
+  ...compat.extends('next/core-web-vitals', 'next/typescript', 'plugin:prettier/recommended'),
   {
     plugins: {
       prettier: (await import('eslint-plugin-prettier')).default,
