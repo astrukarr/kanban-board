@@ -43,7 +43,7 @@ export function createErrorState(
   return {
     message: error.message,
     type,
-    details: error.details ? JSON.stringify(error.details) : undefined,
+    ...(error.details && { details: JSON.stringify(error.details) }),
     timestamp: Date.now(),
   };
 }

@@ -10,8 +10,8 @@
     "yws": "node --experimental-modules scripts/yws.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "analyze": "ANALYZE=true npm run build",
@@ -45,7 +45,7 @@
     "yup": "^1.7.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@eslint/eslintrc": "^3.3.1",
     "@lhci/cli": "^0.15.1",
     "@next/bundle-analyzer": "^15.5.3",
     "@playwright/test": "^1.55.0",

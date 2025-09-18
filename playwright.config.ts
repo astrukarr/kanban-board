@@ -7,14 +7,16 @@ export default defineConfig({
   timeout: 30_000,
   retries: isCI ? 2 : 0,
   // U CI aplikaciju pokrećemo u workflowu (npm run start). Lokalno možemo koristiti dev server.
-  webServer: isCI
-    ? undefined
+  ...(isCI
+    ? {}
     : {
-        command: 'npm run dev',
-        url: 'http://localhost:3000',
-        reuseExistingServer: true,
-        timeout: 120_000,
-      },
+        webServer: {
+          command: 'npm run dev',
+          url: 'http://localhost:3000',
+          reuseExistingServer: true,
+          timeout: 120_000,
+        },
+      }),
   use: {
     baseURL: process.env.PW_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',

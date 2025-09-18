@@ -7,7 +7,6 @@ import {
   createApiError,
 } from '@/utils/errorHelpers';
 import { tasksReducer, initialState } from '@/utils/tasksReducer';
-import type { TasksState } from '@/types/tasks';
 
 // Custom hook for tasks management
 export function useTasks() {
