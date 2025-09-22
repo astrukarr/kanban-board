@@ -12,7 +12,7 @@ type Props = {
 
 export function ColumnsGrid({ columns, onAddTask }: Props) {
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md2:grid-cols-3">
       {COLUMN_CONFIG.map(({ status, title }) => (
         <TaskColumn
           key={status}

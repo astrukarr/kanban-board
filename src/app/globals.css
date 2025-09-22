@@ -1,5 +1,12 @@
 @import 'tailwindcss';
 
+/* stylelint-disable at-rule-no-unknown */
+@theme {
+  --breakpoint-sm: 600px;
+  --breakpoint-md2: 960px;
+}
+/* stylelint-enable at-rule-no-unknown */
+
 /* Prevent horizontal scrolling and ensure proper mobile wrapping */
 html,
 body {
@@ -23,6 +30,6 @@ body > * {
 }
 
 :where(a, button, [role='button'], input, select, textarea):focus-visible {
-  outline: 2px solid theme(colors.indigo.500);
+  outline: 2px solid #6366f1; /* indigo-500 */
   outline-offset: 2px;
 }
